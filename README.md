@@ -1,4 +1,4 @@
 virtual-geoserver
 =================
 
-A Virtual Repository Plugin for GeoServie
+A Virtual Repository Plugin for GeoServers
