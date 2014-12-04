@@ -1,4 +1,4 @@
-package org.virtual.geoserver;
+package org.virtual.geoserver.configuration;
 
 import javax.xml.namespace.QName;
 

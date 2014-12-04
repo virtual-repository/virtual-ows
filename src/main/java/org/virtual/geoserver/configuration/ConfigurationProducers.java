@@ -16,9 +16,9 @@ import lombok.NonNull;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.virtual.geoserver.GeoserverBrowser;
-import org.virtual.geoserver.GeoserverProxy;
-import org.virtual.geoserver.GeoserverReader;
+import org.virtual.geoserver.GeoBrowser;
+import org.virtual.geoserver.GeoProxy;
+import org.virtual.geoserver.GeoReader;
 import org.virtual.geoserver.common.CommonProducers;
 import org.virtualrepository.RepositoryService;
 
@@ -36,7 +36,7 @@ public class ConfigurationProducers {
 		return configuration.servers().stream().map($->
 		
 			//TODO
-			new RepositoryService($.name(),new GeoserverProxy(new GeoserverBrowser(), asList(new GeoserverReader())))
+			new RepositoryService($.name(),new GeoProxy(new GeoBrowser(), asList(new GeoReader())))
 		
 		).collect(toList());
 	}

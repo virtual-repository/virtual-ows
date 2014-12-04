@@ -10,12 +10,12 @@ import org.virtualrepository.spi.Lifecycle;
 import org.virtualrepository.spi.Publisher;
 import org.virtualrepository.spi.ServiceProxy;
 
-public class GeoserverProxy implements ServiceProxy, Lifecycle {
+public class GeoProxy implements ServiceProxy, Lifecycle {
 
-	final GeoserverBrowser browser;
-	final List<GeoserverReader> readers;
+	final GeoBrowser browser;
+	final List<GeoReader> readers;
 	
-	public GeoserverProxy(GeoserverBrowser browser, List<GeoserverReader> readers) {
+	public GeoProxy(GeoBrowser browser, List<GeoReader> readers) {
 		this.browser=browser;
 		this.readers=readers;
 	}

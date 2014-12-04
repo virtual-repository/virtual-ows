@@ -5,7 +5,7 @@ import org.virtualrepository.impl.Type;
 import org.virtualrepository.spi.Importer;
 import org.virtualrepository.tabular.Table;
 
-public class GeoserverReader implements Importer<CsvCodelist, Table> {
+public class GeoReader implements Importer<CsvCodelist, Table> {
 
 	@Override
 	public Type<? extends CsvCodelist> type() {
