@@ -1,0 +1,9 @@
+{
+  
+   "servers" : [
+      {
+        "name" : "http:/acme.org/somename",
+        "uri" : "http:/acme.org/someuri"
+      }
+   ]
+}
