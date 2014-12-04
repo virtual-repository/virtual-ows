@@ -6,11 +6,10 @@ import java.util.List;
 
 import org.virtualrepository.spi.Browser;
 import org.virtualrepository.spi.Importer;
-import org.virtualrepository.spi.Lifecycle;
 import org.virtualrepository.spi.Publisher;
 import org.virtualrepository.spi.ServiceProxy;
 
-public class GeoProxy implements ServiceProxy, Lifecycle {
+public class GeoProxy implements ServiceProxy {
 
 	final GeoBrowser browser;
 	final List<GeoReader> readers;
@@ -20,11 +19,6 @@ public class GeoProxy implements ServiceProxy, Lifecycle {
 		this.readers=readers;
 	}
 	
-	@Override
-	public void init() throws Exception {
-		// TODO Auto-generated method stub
-	}
-
 	@Override
 	public Browser browser() {
 		return browser;

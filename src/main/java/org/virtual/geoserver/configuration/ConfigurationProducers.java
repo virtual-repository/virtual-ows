@@ -13,10 +13,12 @@ import java.util.List;
 import javax.inject.Singleton;
 
 import lombok.NonNull;
+import lombok.extern.slf4j.Slf4j;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.virtual.geoserver.GeoBrowser;
+import org.virtual.geoserver.GeoClient;
 import org.virtual.geoserver.GeoProxy;
 import org.virtual.geoserver.GeoReader;
 import org.virtual.geoserver.common.CommonProducers;
@@ -25,6 +27,7 @@ import org.virtualrepository.RepositoryService;
 import dagger.Module;
 import dagger.Provides;
 
+@Slf4j
 @Module(includes=CommonProducers.class, library=true)
 public class ConfigurationProducers {
 
@@ -33,12 +36,20 @@ public class ConfigurationProducers {
 	@Singleton
 	List<RepositoryService> services(@NonNull Configuration configuration) {
 		
-		return configuration.servers().stream().map($->
+		return configuration.servers().stream().map($-> {
 		
-			//TODO
-			new RepositoryService($.name(),new GeoProxy(new GeoBrowser(), asList(new GeoReader())))
+			log.info("plugging geoserver {} @ {}",$.name(),$.uri());
+			
+			GeoClient client  = new GeoClient($);
+			
+			List<GeoReader> readers =  asList(new GeoReader(client)); // start with one reader
+			
+			GeoProxy proxy = new GeoProxy(new GeoBrowser(client), readers);
+			
+			return new RepositoryService($.name(),proxy);
 		
-		).collect(toList());
+		})
+		.collect(toList());
 	}
 	
 	@Provides
