@@ -2,10 +2,10 @@
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>org.virtualrepository</groupId>
-	<artifactId>virtual-geoserver</artifactId>
+	<artifactId>virtual-ows</artifactId>
 	<version>1.0.0-SNAPSHOT</version>
-	<name>Virtual Geoserver</name>
-	<description>A Virtual Repository Plugin for Geoservers</description>
+	<name>Virtual Ows</name>
+	<description>A Virtual Repository Plugin for OGC Services</description>
 
 
 	<properties>
@@ -25,12 +25,6 @@
 			<snapshots>
 				<enabled>true</enabled>
 			</snapshots>
-		</repository>
-		<repository>
-			<!-- Not needed for "*-geoapi-3.0" versions -->
-			<id>geotoolkit</id>
-			<name>Geotk repository</name>
-			<url>http://maven.geotoolkit.org</url>
 		</repository>
 	</repositories>
 
@@ -59,14 +53,6 @@
 			<artifactId>geoapi</artifactId>
 			<version>3.0.0</version>
 		</dependency>
-
-<!-- 
-
-		<dependency>
-			<groupId>org.geotoolkit</groupId>
-			<artifactId>geotk-client-wfs</artifactId>
-			<version>4.0-M2</version>
-		</dependency> -->
 
 		<dependency>
 			<groupId>com.squareup.dagger</groupId>
