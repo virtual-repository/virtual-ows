@@ -23,6 +23,7 @@ import org.virtual.ows.OwsProxy;
 import org.virtual.ows.WfsReader;
 import org.virtual.ows.common.CommonProducers;
 import org.virtualrepository.RepositoryService;
+import org.virtualrepository.spi.Importer;
 
 import dagger.Module;
 import dagger.Provides;
@@ -42,7 +43,7 @@ public class ConfigurationProducers {
 			
 			OwsClient client  = new OwsClient($);
 			
-			List<WfsReader> importers =  asList(new WfsReader(client)); // start with one reader
+			List<? extends Importer<?,?>> importers =  asList(new WfsReader(client)); // start with one reader
 			
 			OwsProxy proxy = new OwsProxy(new OwsBrowser(client), importers);
 			
