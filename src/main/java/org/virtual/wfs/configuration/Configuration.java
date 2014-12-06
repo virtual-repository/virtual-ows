@@ -1,7 +1,9 @@
-package org.virtual.geoserver.configuration;
+package org.virtual.wfs.configuration;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import org.virtual.ows.OwsService;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
@@ -15,5 +17,5 @@ import lombok.RequiredArgsConstructor;
 public class Configuration {
 
 	@NonNull @JsonProperty
-	List<GeoServer> servers = new ArrayList<>();
+	List<OwsService> services = new ArrayList<>();
 }

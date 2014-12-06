@@ -1,6 +1,6 @@
-package org.virtual.geoserver.configuration;
+package org.virtual.wfs.configuration;
 
-import static org.virtual.geoserver.common.Utils.*;
+import static org.virtual.ows.common.Utils.*;
 
 import java.io.File;
 import java.io.FileOutputStream;

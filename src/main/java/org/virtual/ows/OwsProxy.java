@@ -1,4 +1,4 @@
-package org.virtual.geoserver;
+package org.virtual.ows;
 
 import static java.util.Collections.*;
 
@@ -9,14 +9,14 @@ import org.virtualrepository.spi.Importer;
 import org.virtualrepository.spi.Publisher;
 import org.virtualrepository.spi.ServiceProxy;
 
-public class GeoProxy implements ServiceProxy {
+public class OwsProxy implements ServiceProxy {
 
-	final GeoBrowser browser;
-	final List<GeoReader> readers;
+	final OwsBrowser browser;
+	final List<? extends Importer<?, ?>> importers;
 	
-	public GeoProxy(GeoBrowser browser, List<GeoReader> readers) {
+	public OwsProxy(OwsBrowser browser, List<? extends Importer<?, ?>> importers) {
 		this.browser=browser;
-		this.readers=readers;
+		this.importers=importers;
 	}
 	
 	@Override
@@ -26,7 +26,7 @@ public class GeoProxy implements ServiceProxy {
 
 	@Override
 	public List<? extends Importer<?, ?>> importers() {
-		return readers;
+		return importers;
 	}
 
 	@Override

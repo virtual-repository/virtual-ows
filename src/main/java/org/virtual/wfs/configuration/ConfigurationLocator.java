@@ -1,13 +1,13 @@
-package org.virtual.geoserver.configuration;
+package org.virtual.wfs.configuration;
 
-import static org.virtual.geoserver.common.Constants.*;
-import static org.virtual.geoserver.common.Utils.*;
+import static org.virtual.ows.common.Constants.*;
+import static org.virtual.ows.common.Utils.*;
 
 import java.io.File;
 
 import javax.inject.Inject;
 
-import org.virtual.geoserver.common.Utils;
+import org.virtual.ows.common.Utils;
 
 
 public class ConfigurationLocator {

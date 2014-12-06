@@ -1,12 +1,12 @@
-package org.virtual.geoserver;
+package org.virtual.ows;
 
 import java.util.Collection;
 import java.util.List;
 
 import javax.inject.Inject;
 
-import org.virtual.geoserver.common.CommonProducers;
-import org.virtual.geoserver.configuration.ConfigurationProducers;
+import org.virtual.ows.common.CommonProducers;
+import org.virtual.wfs.configuration.ConfigurationProducers;
 import org.virtualrepository.RepositoryService;
 import org.virtualrepository.spi.Lifecycle;
 import org.virtualrepository.spi.Plugin;
@@ -16,8 +16,8 @@ import dagger.ObjectGraph;
 
 //entrypoint, serves also as top-level dependency module
 
-@Module(injects=GeoPlugin.class,includes={CommonProducers.class, ConfigurationProducers.class})
-public class GeoPlugin implements Plugin, Lifecycle {
+@Module(injects=OwsPlugin.class,includes={CommonProducers.class, ConfigurationProducers.class})
+public class OwsPlugin implements Plugin, Lifecycle {
 
 	@Inject
 	List<RepositoryService> proxies; //(local facades to the remote servers)

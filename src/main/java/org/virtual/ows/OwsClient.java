@@ -1,4 +1,4 @@
-package org.virtual.geoserver;
+package org.virtual.ows;
 
 import static javax.ws.rs.client.ClientBuilder.*;
 
@@ -6,31 +6,41 @@ import java.util.logging.Logger;
 
 import javax.ws.rs.client.Client;
 import javax.ws.rs.client.Invocation.Builder;
+import javax.ws.rs.client.WebTarget;
 
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 
 import org.glassfish.jersey.filter.LoggingFilter;
-import org.virtual.geoserver.configuration.GeoServer;
 
 
 @RequiredArgsConstructor
-public class GeoClient {
+public class OwsClient {
 
 	@NonNull
-	final GeoServer configuration;
+	final OwsService service;
 	
-	
-	public Builder request() {
-		return at("");
+	public void ping() {
+		client().target(service.uri()).request().head();
 	}
 	
-	public Builder at(String path) {
-		return client().target(address(path)).request();
+	public Builder capabilities() {
+		return make("GetCapabilities").request();
 	}
+	
+	
 	
 	
 	////////////////////////////////////////////////////////////////////////////// helpers
+	
+	
+	private  WebTarget make(String $) {
+		
+		return client().target(service.uri())
+				.queryParam("service","wfs")
+				.queryParam("version",service.version())
+				.queryParam("request", $);
+	}
 	
 	private Client client() { 
 		
@@ -38,12 +48,5 @@ public class GeoClient {
 			.register(new LoggingFilter(Logger.getLogger(LoggingFilter.class.getName()),true));
 	}
 	
-	private String address(String path) {
-		return configuration.uri()+(clean(path));
-	}
-	
-	private String clean(String path) {
-		return path.isEmpty()?path: path.startsWith("/")? path:"/"+path;
-	}
 	
 }

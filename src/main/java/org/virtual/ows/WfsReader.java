@@ -1,32 +1,31 @@
-package org.virtual.geoserver;
+package org.virtual.ows;
 
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 
-import org.virtualrepository.csv.CsvCodelist;
 import org.virtualrepository.impl.Type;
+import org.virtualrepository.ows.WsfFeatureType;
 import org.virtualrepository.spi.Importer;
-import org.virtualrepository.tabular.Table;
 
 //this is a reader from codelist (assets) extracted from geoservers and presented in tabular form (api)
 @RequiredArgsConstructor
-public class GeoReader implements Importer<CsvCodelist, Table> {
+public class WfsReader implements Importer<WsfFeatureType, String> {
 
 	@NonNull
-	final GeoClient client; 
+	final OwsClient client; 
 	
 	@Override
-	public Type<? extends CsvCodelist> type() {
-		return CsvCodelist.type;
+	public Type<? extends WsfFeatureType> type() {
+		return WsfFeatureType.type;
 	}
 
 	@Override
-	public Class<Table> api() {
-		return Table.class;
+	public Class<String> api() {
+		return String.class;
 	}
 
 	@Override
-	public Table retrieve(CsvCodelist asset) throws Exception {
+	public String retrieve(WsfFeatureType asset) throws Exception {
 		
 		// TODO: actually retrieve the codelist described in input
 		return null;

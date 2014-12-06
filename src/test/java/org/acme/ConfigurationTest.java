@@ -3,12 +3,12 @@ package org.acme;
 import static java.util.Arrays.*;
 import static javax.xml.namespace.QName.*;
 import static org.junit.Assert.*;
-import static org.virtual.geoserver.common.Utils.*;
-import static org.virtual.geoserver.configuration.Configuration.*;
-import static org.virtual.geoserver.configuration.GeoServer.*;
+import static org.virtual.ows.OwsService.*;
+import static org.virtual.ows.common.Utils.*;
+import static org.virtual.wfs.configuration.Configuration.*;
 
 import org.junit.Test;
-import org.virtual.geoserver.configuration.Configuration;
+import org.virtual.wfs.configuration.Configuration;
 
 public class ConfigurationTest {
 
@@ -16,9 +16,9 @@ public class ConfigurationTest {
 	@Test
 	public void configurationRoundTrips() {
 		
-		Configuration configuration = config().servers(asList(
-				server(valueOf("http://acme.org/somename"),"http://acme.org/someuri"),
-				server(valueOf("http://acme.org/somename"),"http://acme.org/someuri")
+		Configuration configuration = config().services(asList(
+				service(valueOf("http://acme.org/somename"),"http://acme.org/someuri"),
+				service(valueOf("http://acme.org/somename"),"http://acme.org/someuri")
 		));     
 		
 		assertEquals(configuration,jsonRoundtrip(configuration));

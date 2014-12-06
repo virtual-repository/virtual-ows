@@ -1,10 +1,9 @@
 package org.acme;
 
+import static java.util.Collections.*;
 import static javax.ws.rs.core.HttpHeaders.*;
 import static javax.ws.rs.core.MediaType.*;
-import static javax.ws.rs.core.Response.Status.Family.*;
-import static org.junit.Assert.*;
-import static org.virtual.geoserver.configuration.GeoServer.*;
+import static org.virtual.ows.OwsService.*;
 
 import java.util.UUID;
 
@@ -13,30 +12,59 @@ import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status.Family;
 import javax.xml.namespace.QName;
 
+import net.opengis.wfs.v_1_1_0.WFSCapabilitiesType;
+
 import org.junit.Test;
-import org.virtual.geoserver.GeoClient;
-import org.virtual.geoserver.configuration.GeoServer;
+import org.virtual.ows.OwsBrowser;
+import org.virtual.ows.OwsClient;
 
 public class IntegrationTests {
 
+	String endpoint =  "http://www.fao.org/figis/geoserver/ows";
+	
+	OwsClient client = new OwsClient(service(someName(),endpoint));
+	
 	@Test
 	public void ping() {
 		
-		String uri = "http://www.fao.org/figis/geoserver/area/ows?service=WFS";
-		GeoServer server = server(QName.valueOf("test"), uri);
+		client.ping();
 		
-		GeoClient client = new GeoClient(server);
+	}
+	
+	@Test
+	public void fetchCapabilities() {
 		
-		Response response = client.request().head();
+		client.capabilities().get(WFSCapabilitiesType.class);
 		
-		assertEquals(SUCCESSFUL,typeof(response));
+	}
+	
+	@Test
+	public void browse() {
+		
+		OwsBrowser browser = new OwsBrowser(client);
+		
+		System.out.println(browser.discover(emptyList()));
+		
+		client.capabilities().get(WFSCapabilitiesType.class);
 		
 	}
 	
 	
 	
 	
-	///////////////////////////////////////////
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	////////////////////////////////////////////////////////////////////////////////////////////////////// every little helps
+
 	
 	<T> Entity<T> bodyWith(T o) {
 		return Entity.entity(o, APPLICATION_JSON);
@@ -51,7 +79,7 @@ public class IntegrationTests {
 		return response.getHeaderString(CONTENT_TYPE);
 	}
 
-	String someName() {
-		return UUID.randomUUID().toString();
+	QName someName() {
+		return QName.valueOf(UUID.randomUUID().toString());
 	}
 }

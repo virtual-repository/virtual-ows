@@ -1,8 +1,9 @@
 {
   
-   "servers" : [
+   "services" : [
       {
         "name" : "http:/acme.org/somename",
+        "version" : "1.0.0",
         "uri" : "http:/acme.org/someuri"
       }
    ]

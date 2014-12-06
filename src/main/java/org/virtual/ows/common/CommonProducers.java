@@ -1,4 +1,4 @@
-package org.virtual.geoserver.common;
+package org.virtual.ows.common;
 
 import static com.fasterxml.jackson.databind.SerializationFeature.*;
 

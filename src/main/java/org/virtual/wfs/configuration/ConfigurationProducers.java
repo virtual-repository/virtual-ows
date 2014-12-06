@@ -1,9 +1,9 @@
-package org.virtual.geoserver.configuration;
+package org.virtual.wfs.configuration;
 
 import static java.util.Arrays.*;
 import static java.util.stream.Collectors.*;
-import static org.virtual.geoserver.common.Constants.*;
-import static org.virtual.geoserver.common.Utils.*;
+import static org.virtual.ows.common.Constants.*;
+import static org.virtual.ows.common.Utils.*;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -17,11 +17,11 @@ import lombok.extern.slf4j.Slf4j;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.virtual.geoserver.GeoBrowser;
-import org.virtual.geoserver.GeoClient;
-import org.virtual.geoserver.GeoProxy;
-import org.virtual.geoserver.GeoReader;
-import org.virtual.geoserver.common.CommonProducers;
+import org.virtual.ows.OwsBrowser;
+import org.virtual.ows.OwsClient;
+import org.virtual.ows.OwsProxy;
+import org.virtual.ows.WfsReader;
+import org.virtual.ows.common.CommonProducers;
 import org.virtualrepository.RepositoryService;
 
 import dagger.Module;
@@ -36,15 +36,15 @@ public class ConfigurationProducers {
 	@Singleton
 	List<RepositoryService> services(@NonNull Configuration configuration) {
 		
-		return configuration.servers().stream().map($-> {
+		return configuration.services().stream().map($-> {
 		
 			log.info("plugging geoserver {} @ {}",$.name(),$.uri());
 			
-			GeoClient client  = new GeoClient($);
+			OwsClient client  = new OwsClient($);
 			
-			List<GeoReader> readers =  asList(new GeoReader(client)); // start with one reader
+			List<WfsReader> importers =  asList(new WfsReader(client)); // start with one reader
 			
-			GeoProxy proxy = new GeoProxy(new GeoBrowser(client), readers);
+			OwsProxy proxy = new OwsProxy(new OwsBrowser(client), importers);
 			
 			return new RepositoryService($.name(),proxy);
 		
