@@ -8,12 +8,12 @@ import org.virtualrepository.impl.AbstractAsset;
 import org.virtualrepository.impl.AbstractType;
 import org.virtualrepository.impl.Type;
 
-public class WsfFeatureType extends AbstractAsset {
+public class WfsFeatureType extends AbstractAsset {
 	
-	public static final Type<WsfFeatureType> type = new AbstractType<WsfFeatureType>( "wfs/feature") {};
+	public static final Type<WfsFeatureType> type = new AbstractType<WfsFeatureType>( "wfs/feature") {};
 	
 	
-	public <T extends CometAsset> WsfFeatureType(String id, String name, List<Property> properties) {
+	public <T extends CometAsset> WfsFeatureType(String id, String name, List<Property> properties) {
 		
 		super(type,id,name,properties.toArray(new Property[0]));
 

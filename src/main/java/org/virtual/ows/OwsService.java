@@ -33,6 +33,10 @@ public class OwsService {
 			return value;
 		}
 		
+		public boolean before(Version v) {
+			return this.ordinal()<v.ordinal();
+		}
+		
 	}
 
 	@NonNull @JsonProperty
@@ -49,10 +53,6 @@ public class OwsService {
 		validUri("service uri", uri);
 
 		this.uri = uri;
-	}
-	
-	boolean before(Version v) {
-		return version.ordinal()<v.ordinal();
 	}
 
 

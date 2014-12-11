@@ -18,8 +18,9 @@ import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.virtual.ows.OwsBrowser;
-import org.virtual.ows.OwsClient;
 import org.virtual.ows.OwsProxy;
+import org.virtual.ows.WfsClient;
+import org.virtual.ows.WfsRawReader;
 import org.virtual.ows.WfsReader;
 import org.virtual.ows.common.CommonProducers;
 import org.virtualrepository.RepositoryService;
@@ -41,9 +42,12 @@ public class ConfigurationProducers {
 		
 			log.info("plugging geoserver {} @ {}",$.name(),$.uri());
 			
-			OwsClient client  = new OwsClient($);
+			WfsClient client  = new WfsClient($);
 			
-			List<? extends Importer<?,?>> importers =  asList(new WfsReader(client)); // start with one reader
+			List<? extends Importer<?,?>> importers =  asList(
+															new WfsRawReader(client),
+															new WfsReader(client)
+														); 
 			
 			OwsProxy proxy = new OwsProxy(new OwsBrowser(client), importers);
 			

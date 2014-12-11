@@ -8,13 +8,13 @@ import java.util.List;
 
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
-import net.opengis.ows.v_1_0_0.KeywordsType;
-import net.opengis.wfs.v_1_1_0.FeatureTypeType;
-import net.opengis.wfs.v_1_1_0.WFSCapabilitiesType;
 
+import org.geotoolkit.ows.xml.v100.KeywordsType;
+import org.geotoolkit.wfs.xml.v110.FeatureTypeType;
+import org.geotoolkit.wfs.xml.v110.WFSCapabilitiesType;
 import org.virtualrepository.AssetType;
 import org.virtualrepository.Property;
-import org.virtualrepository.ows.WsfFeatureType;
+import org.virtualrepository.ows.WfsFeatureType;
 import org.virtualrepository.spi.Browser;
 import org.virtualrepository.spi.MutableAsset;
 
@@ -22,7 +22,7 @@ import org.virtualrepository.spi.MutableAsset;
 public class OwsBrowser implements Browser {
 
 	@NonNull
-	final OwsClient client;
+	final WfsClient client;
 	
 	
 	@Override
@@ -40,27 +40,27 @@ public class OwsBrowser implements Browser {
 	
 	////////////////////////////////////////////////////////////////////////////////// helpers
 	
-	private WsfFeatureType adapt(FeatureTypeType bean) {
+	private WfsFeatureType adapt(FeatureTypeType bean) {
 	
 		//seems there's no global id and name identifies only in-service.
 		//prefix to protec further in vr pool.
-		String name = bean.getName().toString();
+		String name = bean.getName().getPrefix()+":"+bean.getName().getLocalPart();
 		String id = client.service.name().toString()+"-"+name;
 		
-		return new WsfFeatureType(id,name, propsOf(bean));
+		return new WfsFeatureType(id,name, propsOf(bean));
 	}
 	
 	private List<Property> propsOf(FeatureTypeType bean) {
 		
 		return props().add("title", bean.getTitle())
 					  .add("abstract", bean.getAbstract())
-					  .add("keywords", adapt(bean.getKeywords()))
-					  .add("srs", bean.getDefaultSRS())
+					  .add("keywords", adaptk(bean.getKeywords()))
+					  .add("default CRS", bean.getDefaultCRS())
 					  .done();
 				
 	}
 	
-	private String adapt(List<KeywordsType> kws) {
+	private String adaptk(List<KeywordsType> kws) {
 	
 		List<String> flattened = kws.stream().flatMap($->$.getKeyword().stream()).collect(toList()); 
 		return flattened.isEmpty() ? null : flattened.toString();

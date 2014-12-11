@@ -1,9 +1,11 @@
 package org.acme;
 
+import static java.lang.System.*;
 import static java.util.Collections.*;
 import static javax.ws.rs.core.HttpHeaders.*;
 import static javax.ws.rs.core.MediaType.*;
 import static org.virtual.ows.OwsService.*;
+import static org.virtual.ows.OwsService.Version.*;
 
 import java.util.UUID;
 
@@ -12,17 +14,22 @@ import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status.Family;
 import javax.xml.namespace.QName;
 
-import net.opengis.wfs.v_1_1_0.WFSCapabilitiesType;
+import lombok.extern.slf4j.Slf4j;
 
+import org.geotoolkit.wfs.xml.v110.WFSCapabilitiesType;
 import org.junit.Test;
 import org.virtual.ows.OwsBrowser;
-import org.virtual.ows.OwsClient;
+import org.virtual.ows.WfsClient;
+import org.virtual.ows.WfsReader;
+import org.virtualrepository.ows.Features;
+import org.virtualrepository.ows.WfsFeatureType;
 
+@Slf4j
 public class IntegrationTests {
 
 	String endpoint =  "http://www.fao.org/figis/geoserver/ows";
 	
-	OwsClient client = new OwsClient(service(someName(),endpoint));
+	WfsClient client = new WfsClient(service(someName(),endpoint).version(v110));
 	
 	@Test
 	public void ping() {
@@ -34,7 +41,7 @@ public class IntegrationTests {
 	@Test
 	public void fetchCapabilities() {
 		
-		client.capabilities().get(WFSCapabilitiesType.class);
+		client.capabilities().get(WFSCapabilitiesType.class);;
 		
 	}
 	
@@ -45,9 +52,24 @@ public class IntegrationTests {
 		
 		System.out.println(browser.discover(emptyList()));
 		
-		client.capabilities().get(WFSCapabilitiesType.class);
+	}
+	
+	
+	@Test
+	public void retrieve() throws Exception {
+		
+		long time = currentTimeMillis();
+		
+		WfsReader reader = new WfsReader(client);
+		
+		WfsFeatureType asset = new WfsFeatureType("some", "fifao:EEZ", emptyList());
+		
+		Features features = reader.retrieve(asset);
+	
+		log.info("fetched {} features in {} ms.",features.all().size(),currentTimeMillis()-time);
 		
 	}
+	
 	
 	
 	
