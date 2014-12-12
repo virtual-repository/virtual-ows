@@ -14,6 +14,13 @@
 	</properties>
 
 
+  <distributionManagement>
+    <snapshotRepository>
+      <id>gcube-snapshots</id>
+      <url>http://maven.research-infrastructures.eu/nexus/content/repositories/gcube-snapshots</url>
+    </snapshotRepository>
+  </distributionManagement>
+
 	<repositories>
 		<repository>
 			<id>gcube-snapshots</id>
