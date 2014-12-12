@@ -24,6 +24,7 @@ import javax.ws.rs.ext.Provider;
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 
+import lombok.Getter;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -33,24 +34,32 @@ import org.glassfish.jersey.filter.LoggingFilter;
 import org.opengis.feature.FeatureType;
 
 
-@RequiredArgsConstructor
+@Slf4j
+@RequiredArgsConstructor 
 public class WfsClient {
 
 	final private JAXBFeatureTypeReader reader = new JAXBFeatureTypeReader();
 	
 	final private Map<String,List<? extends FeatureType>> map = new HashMap<>();
 	
-	@NonNull
-	final OwsService service;
+	@NonNull @Getter
+	final private OwsService service;
 
+	
 	public void ping() {
 		client().target(service.uri()).request().head();
 	}
 	
+	
 	public Builder capabilities() {
+		
+		log.info("fetching {}'s capabilities",service.name());
+		
 		return make("GetCapabilities").request();
+	
 	}
 	
+
 	public Builder featuresFor(@NonNull String featureType) {
 		
 		String nameClause = service.version().before(v200) ? "typeName" : "typeNames";
@@ -82,7 +91,6 @@ public class WfsClient {
 
 	
 	////////////////////////////////////////////////////////////////////////////// helpers
-	
 	
 	
 	private Builder describe(@NonNull String featureType) {

@@ -11,12 +11,38 @@ import java.util.regex.Pattern;
 
 import javax.xml.namespace.QName;
 
+import org.virtualrepository.Properties;
+import org.virtualrepository.Property;
+
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.JsonNodeFactory;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 
 public class Utils {
+	
+	
+	public static interface PropertyBuilder {
+	
+		PropertyBuilder add(String name, String value);
+	
+	}
+	
+	public static PropertyBuilder build(final Properties props) {
+	
+		return new PropertyBuilder() {
+		
+			@Override
+			public PropertyBuilder add(String name, String value) {
+			
+				if (value!=null) 
+				props.add(new Property(name,value));
+				
+				return this;
+			}
+		};
+	}
+
 
 	//parameter validation
 	

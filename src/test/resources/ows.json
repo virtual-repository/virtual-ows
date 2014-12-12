@@ -2,9 +2,9 @@
   
    "services" : [
       {
-        "name" : "http:/acme.org/somename",
-        "version" : "1.0.0",
-        "uri" : "http:/acme.org/someuri"
+        "name" : "Fao's",
+        "version" : "1.1.0",
+        "uri" : "http://www.fao.org/figis/geoserver/ows"
       }
    ]
 }

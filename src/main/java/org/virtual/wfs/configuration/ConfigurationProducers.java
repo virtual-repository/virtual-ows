@@ -1,6 +1,5 @@
 package org.virtual.wfs.configuration;
 
-import static java.util.Arrays.*;
 import static java.util.stream.Collectors.*;
 import static org.virtual.ows.common.Constants.*;
 import static org.virtual.ows.common.Utils.*;
@@ -17,14 +16,11 @@ import lombok.extern.slf4j.Slf4j;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.virtual.ows.OwsBrowser;
 import org.virtual.ows.OwsProxy;
 import org.virtual.ows.WfsClient;
-import org.virtual.ows.WfsRawReader;
-import org.virtual.ows.WfsReader;
 import org.virtual.ows.common.CommonProducers;
+import org.virtualrepository.Properties;
 import org.virtualrepository.RepositoryService;
-import org.virtualrepository.spi.Importer;
 
 import dagger.Module;
 import dagger.Provides;
@@ -42,16 +38,16 @@ public class ConfigurationProducers {
 		
 			log.info("plugging geoserver {} @ {}",$.name(),$.uri());
 			
-			WfsClient client  = new WfsClient($);
+			OwsProxy proxy = new OwsProxy(new WfsClient($));
 			
-			List<? extends Importer<?,?>> importers =  asList(
-															new WfsRawReader(client),
-															new WfsReader(client)
-														); 
+			try {
+				proxy.profile().refresh();
+			}
+			catch(Exception tolerateAtThisStage) {}
 			
-			OwsProxy proxy = new OwsProxy(new OwsBrowser(client), importers);
+			Properties props = proxy.profile().properties();
 			
-			return new RepositoryService($.name(),proxy);
+			return new RepositoryService($.name(),proxy,props.toArray());
 		
 		})
 		.collect(toList());

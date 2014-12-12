@@ -6,6 +6,7 @@ import static javax.ws.rs.core.HttpHeaders.*;
 import static javax.ws.rs.core.MediaType.*;
 import static org.virtual.ows.OwsService.*;
 import static org.virtual.ows.OwsService.Version.*;
+import static org.virtualrepository.ows.WfsFeatureType.*;
 
 import java.util.UUID;
 
@@ -16,11 +17,13 @@ import javax.xml.namespace.QName;
 
 import lombok.extern.slf4j.Slf4j;
 
-import org.geotoolkit.wfs.xml.v110.WFSCapabilitiesType;
 import org.junit.Test;
 import org.virtual.ows.OwsBrowser;
+import org.virtual.ows.OwsProxy;
 import org.virtual.ows.WfsClient;
 import org.virtual.ows.WfsReader;
+import org.virtualrepository.VirtualRepository;
+import org.virtualrepository.impl.Repository;
 import org.virtualrepository.ows.Features;
 import org.virtualrepository.ows.WfsFeatureType;
 
@@ -31,6 +34,8 @@ public class IntegrationTests {
 	
 	WfsClient client = new WfsClient(service(someName(),endpoint).version(v110));
 	
+	OwsProxy proxy = new OwsProxy(client);
+	
 	@Test
 	public void ping() {
 		
@@ -39,16 +44,16 @@ public class IntegrationTests {
 	}
 	
 	@Test
-	public void fetchCapabilities() {
+	public void fetchProfile() {
 		
-		client.capabilities().get(WFSCapabilitiesType.class);;
+		proxy.profile();
 		
 	}
 	
 	@Test
-	public void browse() {
+	public void discover() {
 		
-		OwsBrowser browser = new OwsBrowser(client);
+		OwsBrowser browser = proxy.browser();
 		
 		System.out.println(browser.discover(emptyList()));
 		
@@ -62,10 +67,44 @@ public class IntegrationTests {
 		
 		WfsReader reader = new WfsReader(client);
 		
-		WfsFeatureType asset = new WfsFeatureType("some", "fifao:EEZ", emptyList());
+		WfsFeatureType asset = new WfsFeatureType("some", "fifao:EEZ");
 		
 		Features features = reader.retrieve(asset);
 	
+		log.info("fetched {} features in {} ms.",features.all().size(),currentTimeMillis()-time);
+		
+	}
+	
+	@Test
+	public void browseAndRetrieve() throws Exception {
+		
+		long time = currentTimeMillis();
+		
+		OwsBrowser browser = proxy.browser();
+		
+		WfsReader reader = new WfsReader(client);
+		
+		WfsFeatureType asset = (WfsFeatureType) browser.discover(emptyList()).iterator().next();
+	
+		Features features = reader.retrieve(asset);
+	
+		log.info("fetched {} features in {} ms.",features.all().size(),currentTimeMillis()-time);
+		
+	}
+	
+	@Test
+	public void browseAndRetrieveWithVR() throws Exception {
+		
+		long time = currentTimeMillis();
+		
+		VirtualRepository repo = new Repository();
+		
+		repo.discover(type);
+		
+		Features features = repo.retrieve(repo.iterator().next(),Features.class);
+		
+		System.out.println(features.all().size());
+		
 		log.info("fetched {} features in {} ms.",features.all().size(),currentTimeMillis()-time);
 		
 	}
