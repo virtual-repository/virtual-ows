@@ -1,9 +1,8 @@
 package org.virtual.ows;
 
+import java.io.InputStream;
 import java.util.Collection;
 import java.util.List;
-
-import javax.ws.rs.core.Response;
 
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
@@ -39,11 +38,11 @@ public class WfsReader implements Importer<WfsFeatureType,Features> {
 		
 		JAXPStreamFeatureReader reader = new JAXPStreamFeatureReader((List) client.typesFor(name));
 		
-		Response response =  client.featuresFor(asset.name()).get();
+		InputStream stream =  client.featuresFor(asset.name()).get(InputStream.class);
+
+		Collection coll = (Collection) reader.read(stream);
 		
-		Collection coll = (Collection) reader.read(response.getEntity());
-		
-		return new Features(coll); 
+		return new Features(coll);
 		
 	}
 

@@ -5,6 +5,7 @@
         "name" : "Fao's",
         "version" : "1.1.0",
         "uri" : "http://www.fao.org/figis/geoserver/ows",
+        "compress" : true,
         "excludes" : ["THE_GEOM"]
       }
    ]

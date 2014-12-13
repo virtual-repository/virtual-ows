@@ -32,7 +32,10 @@ public class IntegrationTests {
 
 	String endpoint =  "http://www.fao.org/figis/geoserver/ows";
 	
-	WfsClient client = new WfsClient(service(someName(),endpoint).version(v110).excludes(singleton("THE_GEOM")));
+	WfsClient client = new WfsClient(service(someName(),endpoint)
+										.version(v110)
+										.compress(true)
+										.excludes(singleton("THE_GEOM")));
 	
 	OwsProxy proxy = new OwsProxy(client);
 	
@@ -102,8 +105,6 @@ public class IntegrationTests {
 		repo.discover(type);
 		
 		Features features = repo.retrieve(repo.iterator().next(),Features.class);
-		
-		System.out.println(features.all().size());
 		
 		log.info("fetched {} features in {} ms.",features.all().size(),currentTimeMillis()-time);
 		

@@ -52,6 +52,9 @@ public class OwsService {
 	private String uri;
 	
 	@JsonProperty
+	private boolean compress = true;
+	
+	@JsonProperty
 	private Set<String> excludes = new HashSet<>();
 	
 	public void uri(String uri) {

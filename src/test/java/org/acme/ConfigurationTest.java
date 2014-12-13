@@ -22,6 +22,7 @@ public class ConfigurationTest {
 		Configuration configuration = config().services(asList(
 				service(QName.valueOf("http://acme.org/somename"),"http://acme.org/someuri"),
 				service(QName.valueOf("http://acme.org/somename"),"http://acme.org/someuri")
+							 .compress(false)
 							 .excludes(singleton("test"))
 		));     
 		

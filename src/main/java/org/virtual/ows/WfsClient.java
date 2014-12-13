@@ -32,7 +32,9 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
 import org.geotoolkit.feature.xml.jaxb.JAXBFeatureTypeReader;
+import org.glassfish.jersey.client.filter.EncodingFilter;
 import org.glassfish.jersey.filter.LoggingFilter;
+import org.glassfish.jersey.message.GZipEncoder;
 import org.opengis.feature.FeatureType;
 import org.opengis.feature.PropertyType;
 
@@ -50,7 +52,7 @@ public class WfsClient {
 
 	
 	public void ping() {
-		client().target(service.uri()).request().head();
+		client(false).target(service.uri()).request().head();
 	}
 	
 	
@@ -58,7 +60,7 @@ public class WfsClient {
 		
 		log.info("fetching {}'s capabilities",service.name());
 		
-		return make("GetCapabilities").request();
+		return make("GetCapabilities",false).request();
 	
 	}
 	
@@ -67,7 +69,7 @@ public class WfsClient {
 		
 		String nameClause = service.version().before(v200) ? "typeName" : "typeNames";
 		
-		WebTarget target =  make("GetFeature").queryParam(nameClause,typename);
+		WebTarget target =  make("GetFeature", service.compress()).queryParam(nameClause,typename);
 		
 		StringBuilder builder = new StringBuilder();
 		
@@ -76,7 +78,7 @@ public class WfsClient {
 		
 		if (builder.length()>0)
 			target = target.queryParam("propertyName", builder.toString());
-		
+	
 		return target.request();
 		
 	}
@@ -125,26 +127,34 @@ public class WfsClient {
 		
 		String nameClause = service.version().before(v200) ? "typeName" : "typeNames";
 		
-		return make("DescribeFeatureType").queryParam(nameClause,typename).request();
+		return make("DescribeFeatureType", false).queryParam(nameClause,typename).request();
 	}
 	
 	
 	
-	private  WebTarget make(String $) {
+	private  WebTarget make(String $, boolean compressResponse) {
 		
-		return client().target(service.uri())
+		return client(compressResponse)
+				.target(service.uri())
 				.queryParam("service","wfs")
 				.queryParam("version",service.version().value())
 				.queryParam("request", $);
 	}
 	
-	private Client client() { 
+	private Client client(boolean compressResponse) { 
 		
-		return newClient()
-			.register(ContentTypeFixer.instance)
-			.register(new LoggingFilter(Logger.getLogger(LoggingFilter.class.getName()),true))
-			//.register(JAXBContextProvider.instance)
-			;
+		Client client = newClient()
+				.register(ContentTypeFixer.instance);
+		
+		if(compressResponse){
+			client
+				.register(GZipEncoder.class)
+				.register(EncodingFilter.class);
+		}
+			
+		client.register(new LoggingFilter(Logger.getLogger(LoggingFilter.class.getName()),true));
+		
+		return client;
 	}
 	
 	
