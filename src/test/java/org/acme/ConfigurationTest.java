@@ -23,6 +23,7 @@ public class ConfigurationTest {
 				service(QName.valueOf("http://acme.org/somename"),"http://acme.org/someuri"),
 				service(QName.valueOf("http://acme.org/somename"),"http://acme.org/someuri")
 							 .compress(false)
+							 .excludeGeom(true)
 							 .excludes(singleton("test"))
 		));     
 		

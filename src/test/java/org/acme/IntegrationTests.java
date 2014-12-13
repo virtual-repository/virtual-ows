@@ -8,6 +8,8 @@ import static org.virtual.ows.OwsService.*;
 import static org.virtual.ows.OwsService.Version.*;
 import static org.virtualrepository.ows.WfsFeatureType.*;
 
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.UUID;
 
 import javax.ws.rs.client.Entity;
@@ -17,7 +19,9 @@ import javax.xml.namespace.QName;
 
 import lombok.extern.slf4j.Slf4j;
 
+import org.junit.Assert;
 import org.junit.Test;
+import org.opengis.feature.Feature;
 import org.virtual.ows.OwsBrowser;
 import org.virtual.ows.OwsProxy;
 import org.virtual.ows.WfsClient;
@@ -35,7 +39,8 @@ public class IntegrationTests {
 	WfsClient client = new WfsClient(service(someName(),endpoint)
 										.version(v110)
 										.compress(true)
-										.excludes(singleton("THE_GEOM")));
+										.excludeGeom(true)
+										.excludes(singleton("SUBOCEAN")));
 	
 	OwsProxy proxy = new OwsProxy(client);
 	
@@ -70,7 +75,7 @@ public class IntegrationTests {
 		
 		WfsReader reader = new WfsReader(client);
 		
-		WfsFeatureType asset = new WfsFeatureType("some", "fifao:EEZ");
+		WfsFeatureType asset = new WfsFeatureType("some", "fifao:FAO_MAJOR");
 		
 		Features features = reader.retrieve(asset);
 	

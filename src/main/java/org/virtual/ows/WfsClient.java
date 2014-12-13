@@ -31,6 +31,7 @@ import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
+import org.geotoolkit.feature.type.GeometryType;
 import org.geotoolkit.feature.xml.jaxb.JAXBFeatureTypeReader;
 import org.glassfish.jersey.client.filter.EncodingFilter;
 import org.glassfish.jersey.filter.LoggingFilter;
@@ -71,14 +72,17 @@ public class WfsClient {
 		
 		WebTarget target =  make("GetFeature", service.compress()).queryParam(nameClause,typename);
 		
-		StringBuilder builder = new StringBuilder();
+		if(service.excludeGeom() || service.excludes().size() > 0){
 		
-		for (String prop : propertiesFor(typename))
-			builder.append(builder.length()>0? ","+prop : prop);
-		
-		if (builder.length()>0)
-			target = target.queryParam("propertyName", builder.toString());
-	
+			StringBuilder builder = new StringBuilder();
+			
+			for (String prop : propertiesFor(typename))
+				builder.append(builder.length()>0? ","+prop : prop);
+			
+			if (builder.length()>0)
+				target = target.queryParam("propertyName", builder.toString());
+		}
+			
 		return target.request();
 		
 	}
@@ -117,8 +121,14 @@ public class WfsClient {
 		
 		for (FeatureType type : typesFor(typename))
 			for (PropertyType ptype : type.getProperties(true))
-				if (!service.excludes().contains(ptype.getName().toString()))
-					props.add(ptype.getName().toString());
+				if(service.excludeGeom()){
+					if(!(ptype instanceof GeometryType)
+					&& !service.excludes().contains(ptype.getName().toString()))
+							props.add(ptype.getName().toString());		
+				}else{
+					if (!service.excludes().contains(ptype.getName().toString()))
+						props.add(ptype.getName().toString());
+				}
 		
 		return props;
 	}

@@ -57,6 +57,9 @@ public class OwsService {
 	@JsonProperty
 	private Set<String> excludes = new HashSet<>();
 	
+	@JsonProperty
+	private boolean excludeGeom = false;
+	
 	public void uri(String uri) {
 		
 		validUri("service uri", uri);
