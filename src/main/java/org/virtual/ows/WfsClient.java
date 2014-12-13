@@ -8,8 +8,10 @@ import static org.virtual.ows.common.Utils.*;
 
 import java.io.IOException;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.logging.Logger;
 
 import javax.annotation.Priority;
@@ -32,6 +34,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.geotoolkit.feature.xml.jaxb.JAXBFeatureTypeReader;
 import org.glassfish.jersey.filter.LoggingFilter;
 import org.opengis.feature.FeatureType;
+import org.opengis.feature.PropertyType;
 
 
 @Slf4j
@@ -60,11 +63,22 @@ public class WfsClient {
 	}
 	
 
-	public Builder featuresFor(@NonNull String featureType) {
+	public Builder featuresFor(@NonNull String typename) {
 		
 		String nameClause = service.version().before(v200) ? "typeName" : "typeNames";
 		
-		return make("GetFeature").queryParam(nameClause,featureType).request();
+		WebTarget target =  make("GetFeature").queryParam(nameClause,typename);
+		
+		StringBuilder builder = new StringBuilder();
+		
+		for (String prop : propertiesFor(typename))
+			builder.append(builder.length()>0? ","+prop : prop);
+		
+		if (builder.length()>0)
+			target = target.queryParam("propertyName", builder.toString());
+		
+		return target.request();
+		
 	}
 
 	
@@ -75,9 +89,11 @@ public class WfsClient {
 		if (types==null) {
 		
 			try {
+				
 				String schema = describe(name).get(String.class);
 			
 				types = reader.read(schema);
+				
 			}
 			catch(Exception e) {
 				throw unchecked("cannot acquire schema for "+name,e);
@@ -93,11 +109,23 @@ public class WfsClient {
 	////////////////////////////////////////////////////////////////////////////// helpers
 	
 	
-	private Builder describe(@NonNull String featureType) {
+	private Set<String> propertiesFor(String typename) {
+		
+		Set<String> props = new HashSet<String>();
+		
+		for (FeatureType type : typesFor(typename))
+			for (PropertyType ptype : type.getProperties(true))
+				if (!service.excludes().contains(ptype.getName().toString()))
+					props.add(ptype.getName().toString());
+		
+		return props;
+	}
+
+	private Builder describe(@NonNull String typename) {
 		
 		String nameClause = service.version().before(v200) ? "typeName" : "typeNames";
 		
-		return make("DescribeFeatureType").queryParam(nameClause,featureType).request();
+		return make("DescribeFeatureType").queryParam(nameClause,typename).request();
 	}
 	
 	

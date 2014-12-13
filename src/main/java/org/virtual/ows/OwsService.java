@@ -3,6 +3,9 @@ package org.virtual.ows;
 import static org.virtual.ows.OwsService.Version.*;
 import static org.virtual.ows.common.Utils.*;
 
+import java.util.HashSet;
+import java.util.Set;
+
 import javax.xml.namespace.QName;
 
 import lombok.Data;
@@ -48,12 +51,17 @@ public class OwsService {
 	@NonNull @JsonProperty
 	private String uri;
 	
+	@JsonProperty
+	private Set<String> excludes = new HashSet<>();
+	
 	public void uri(String uri) {
 		
 		validUri("service uri", uri);
 
 		this.uri = uri;
 	}
+	
+	
 
 
 }

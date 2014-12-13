@@ -1,6 +1,7 @@
 package org.acme;
 
 import static java.util.Arrays.*;
+import static java.util.Collections.*;
 import static org.junit.Assert.*;
 import static org.virtual.ows.OwsService.*;
 import static org.virtual.ows.OwsService.Version.*;
@@ -21,6 +22,7 @@ public class ConfigurationTest {
 		Configuration configuration = config().services(asList(
 				service(QName.valueOf("http://acme.org/somename"),"http://acme.org/someuri"),
 				service(QName.valueOf("http://acme.org/somename"),"http://acme.org/someuri")
+							 .excludes(singleton("test"))
 		));     
 		
 		assertEquals(configuration,jsonRoundtrip(configuration));

@@ -4,7 +4,8 @@
       {
         "name" : "Fao's",
         "version" : "1.1.0",
-        "uri" : "http://www.fao.org/figis/geoserver/ows"
+        "uri" : "http://www.fao.org/figis/geoserver/ows",
+        "excludes" : ["THE_GEOM"]
       }
    ]
 }

@@ -32,7 +32,7 @@ public class IntegrationTests {
 
 	String endpoint =  "http://www.fao.org/figis/geoserver/ows";
 	
-	WfsClient client = new WfsClient(service(someName(),endpoint).version(v110));
+	WfsClient client = new WfsClient(service(someName(),endpoint).version(v110).excludes(singleton("THE_GEOM")));
 	
 	OwsProxy proxy = new OwsProxy(client);
 	
