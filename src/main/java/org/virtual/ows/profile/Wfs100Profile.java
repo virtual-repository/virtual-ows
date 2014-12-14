@@ -1,5 +1,7 @@
 package org.virtual.ows.profile;
 
+import static java.util.stream.Collectors.toList;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -17,8 +19,7 @@ import org.virtualrepository.Property;
 public class Wfs100Profile implements WfsProfile {
 
 	final WfsClient client;
-	
-	
+		
 	WFSCapabilitiesType capabilities;
 	
 	
@@ -33,14 +34,17 @@ public class Wfs100Profile implements WfsProfile {
 		
 		Properties properties = new Properties();
 		
-		if (capabilities!=null)
-			
+		if (capabilities != null)	
 			properties.add(
 				
-				new Property("title", capabilities.getServiceIdentification().getFirstTitle()),
-				new Property("abstract", capabilities.getServiceIdentification().getFirstAbstract()),
-				new Property("vendor", capabilities.getCapability().getVendorSpecificCapabilities()),
-				new Property("provider",capabilities.getServiceProvider().getProviderName())	
+				new Property("title",capabilities.getServiceIdentification().getFirstTitle()),
+				new Property("abstract",capabilities.getServiceIdentification().getFirstAbstract()),
+				new Property("keywords",capabilities.getServiceIdentification().getKeywords()
+										.stream().flatMap($->$.getKeywordList().stream()).collect(toList()).toString()),
+							
+				new Property("type", capabilities.getServiceIdentification().getServiceType().getValue()),
+				new Property("version",capabilities.getVersion()),
+				new Property("provider",capabilities.getServiceProvider().getProviderName())
 					
 			);
 		

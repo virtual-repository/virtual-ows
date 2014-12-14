@@ -1,5 +1,7 @@
 package org.virtual.ows.profile;
 
+import static java.util.stream.Collectors.toList;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -24,7 +26,7 @@ public class Wfs200Profile implements WfsProfile {
 	public Wfs200Profile(@NonNull WfsClient client) {
 		
 		this.client=client;
-	
+		
 	}
 	
 	@Override
@@ -32,13 +34,19 @@ public class Wfs200Profile implements WfsProfile {
 		
 		Properties properties = new Properties();
 		
-		properties.add(
-				
-					new Property("title", capabilities.getServiceIdentification().getFirstTitle()),
-					new Property("abstract", capabilities.getServiceIdentification().getFirstAbstract()),
-					new Property("provider",capabilities.getServiceProvider().getProviderName())
+		if (capabilities != null)
+			properties.add(
 					
-		);
+				new Property("title",capabilities.getServiceIdentification().getFirstTitle()),
+				new Property("abstract",capabilities.getServiceIdentification().getFirstAbstract()),
+				new Property("keywords",capabilities.getServiceIdentification().getKeywords()
+										.stream().flatMap($->$.getKeywordList().stream()).collect(toList()).toString()),
+							
+				new Property("type", capabilities.getServiceIdentification().getServiceType().getValue()),
+				new Property("version",capabilities.getVersion()),
+				new Property("provider",capabilities.getServiceProvider().getProviderName())
+						
+			);
 		
 		return properties;
 	}
