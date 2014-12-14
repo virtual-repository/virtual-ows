@@ -53,8 +53,6 @@ public class IntegrationTests {
 	
 		proxy = new OwsProxy(client);
 		
-		proxy.profile().refresh();
-		
 	}
 	
 	@Test
@@ -69,6 +67,8 @@ public class IntegrationTests {
 		
 		WfsProfile profile = proxy.profile();
 		
+		profile.refresh();
+		
 		Properties properties = profile.properties();
 		assertEquals(6, properties.size());
 		assertNotNull(properties.lookup("title").value());
@@ -77,6 +77,7 @@ public class IntegrationTests {
 		assertNotNull(properties.lookup("type").value());
 		assertNotNull(properties.lookup("version").value());
 		assertNotNull(properties.lookup("provider").value());
+		
 		for(Property prop : properties)
 			log.info("Property '{}' = {}",prop.name(),prop.value());
 		
