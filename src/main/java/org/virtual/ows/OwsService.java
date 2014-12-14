@@ -46,7 +46,7 @@ public class OwsService {
 	private QName name;
 	
 	@NonNull @JsonProperty
-	private Version version = v100;
+	private Version version = v110;
 	
 	@NonNull @JsonProperty
 	private String uri;

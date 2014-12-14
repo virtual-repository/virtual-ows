@@ -4,6 +4,7 @@ import static java.lang.System.*;
 import static java.util.Collections.*;
 import static javax.ws.rs.core.HttpHeaders.*;
 import static javax.ws.rs.core.MediaType.*;
+import static org.junit.Assert.*;
 import static org.virtual.ows.OwsService.*;
 import static org.virtual.ows.OwsService.Version.*;
 import static org.virtualrepository.ows.WfsFeatureType.*;
@@ -17,28 +18,44 @@ import javax.xml.namespace.QName;
 
 import lombok.extern.slf4j.Slf4j;
 
-import org.junit.Test;
+import org.junit.Before;
 import org.virtual.ows.OwsBrowser;
 import org.virtual.ows.OwsProxy;
 import org.virtual.ows.WfsClient;
 import org.virtual.ows.WfsReader;
+import org.virtual.ows.profile.WfsProfile;
+import org.virtualrepository.Properties;
+import org.virtualrepository.Property;
 import org.virtualrepository.VirtualRepository;
 import org.virtualrepository.impl.Repository;
 import org.virtualrepository.ows.Features;
 import org.virtualrepository.ows.WfsFeatureType;
+//github.com/virtual-repository/virtual-ows.git
+import org.junit.Test;
 
 @Slf4j
 public class IntegrationTests {
 
-	String endpoint =  "http://www.fao.org/figis/geoserver/ows";
+	String endpoint =  "http://www.fao.org/figis/geoserver/fifao/ows";
 	
-	WfsClient client = new WfsClient(service(someName(),endpoint)
+	WfsClient client;
+	
+	OwsProxy proxy;
+	
+	@Before
+	public void setUp(){
+		
+		client = new WfsClient(service(someName(),endpoint)
 										.version(v110)
 										.compress(true)
 										.excludeGeom(true)
 										.excludes(singleton("SUBOCEAN")));
 	
-	OwsProxy proxy = new OwsProxy(client);
+		proxy = new OwsProxy(client);
+		
+		proxy.profile().refresh();
+		
+	}
 	
 	@Test
 	public void ping() {
@@ -48,13 +65,32 @@ public class IntegrationTests {
 	}
 	
 	@Test
+	public void fetchProfile() {
+		
+		WfsProfile profile = proxy.profile();
+		
+		Properties properties = profile.properties();
+		assertEquals(6, properties.size());
+		assertNotNull(properties.lookup("title").value());
+		assertNotNull(properties.lookup("abstract").value());
+		assertNotNull(properties.lookup("keywords").value());
+		assertNotNull(properties.lookup("type").value());
+		assertNotNull(properties.lookup("version").value());
+		assertNotNull(properties.lookup("provider").value());
+		for(Property prop : properties)
+			log.info("Property '{}' = {}",prop.name(),prop.value());
+		
+		assertFalse(profile.types().isEmpty());
+		
+	}
+	
+	@Test
 	public void discover() {
 		
 		OwsBrowser browser = proxy.browser();
 		
 		System.out.println(browser.discover(emptyList()));
-		
-		
+			
 	}
 	
 	

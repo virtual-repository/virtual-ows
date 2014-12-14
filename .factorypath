@@ -1,6 +1,7 @@
 <factorypath>
     <factorypathentry kind="VARJAR" id="M2_REPO/org/slf4j/slf4j-api/1.7.2/slf4j-api-1.7.2.jar" enabled="true" runInBatchMode="false"/>
     <factorypathentry kind="VARJAR" id="M2_REPO/net/sf/opencsv/opencsv/2.0/opencsv-2.0.jar" enabled="true" runInBatchMode="false"/>
+    <factorypathentry kind="VARJAR" id="M2_REPO/org/opengis/geoapi-pending/4.0-M01/geoapi-pending-4.0-M01.jar" enabled="true" runInBatchMode="false"/>
     <factorypathentry kind="VARJAR" id="M2_REPO/org/projectlombok/lombok/1.14.8/lombok-1.14.8.jar" enabled="true" runInBatchMode="false"/>
     <factorypathentry kind="VARJAR" id="M2_REPO/com/squareup/dagger/dagger/1.2.2/dagger-1.2.2.jar" enabled="true" runInBatchMode="false"/>
     <factorypathentry kind="VARJAR" id="M2_REPO/javax/inject/javax.inject/1/javax.inject-1.jar" enabled="true" runInBatchMode="false"/>
@@ -22,4 +23,54 @@
     <factorypathentry kind="VARJAR" id="M2_REPO/org/glassfish/hk2/external/javax.inject/2.3.0-b10/javax.inject-2.3.0-b10.jar" enabled="true" runInBatchMode="false"/>
     <factorypathentry kind="VARJAR" id="M2_REPO/org/glassfish/hk2/hk2-locator/2.3.0-b10/hk2-locator-2.3.0-b10.jar" enabled="true" runInBatchMode="false"/>
     <factorypathentry kind="VARJAR" id="M2_REPO/org/javassist/javassist/3.18.1-GA/javassist-3.18.1-GA.jar" enabled="true" runInBatchMode="false"/>
+    <factorypathentry kind="VARJAR" id="M2_REPO/org/geotoolkit/geotk-client-wfs/4.0-M2/geotk-client-wfs-4.0-M2.jar" enabled="true" runInBatchMode="false"/>
+    <factorypathentry kind="VARJAR" id="M2_REPO/org/geotoolkit/geotk-client-store/4.0-M2/geotk-client-store-4.0-M2.jar" enabled="true" runInBatchMode="false"/>
+    <factorypathentry kind="VARJAR" id="M2_REPO/org/geotoolkit/geotk-temporal/4.0-M2/geotk-temporal-4.0-M2.jar" enabled="true" runInBatchMode="false"/>
+    <factorypathentry kind="VARJAR" id="M2_REPO/org/geotoolkit/geotk-coverage-store/4.0-M2/geotk-coverage-store-4.0-M2.jar" enabled="true" runInBatchMode="false"/>
+    <factorypathentry kind="VARJAR" id="M2_REPO/org/geotoolkit/geotk-coverageio/4.0-M2/geotk-coverageio-4.0-M2.jar" enabled="true" runInBatchMode="false"/>
+    <factorypathentry kind="VARJAR" id="M2_REPO/javax/media/jai_imageio/1.1.1/jai_imageio-1.1.1.jar" enabled="true" runInBatchMode="false"/>
+    <factorypathentry kind="VARJAR" id="M2_REPO/org/geotoolkit/geotk-coverage-sql/4.0-M2/geotk-coverage-sql-4.0-M2.jar" enabled="true" runInBatchMode="false"/>
+    <factorypathentry kind="VARJAR" id="M2_REPO/org/geotoolkit/geotk-coverage-wkb/4.0-M2/geotk-coverage-wkb-4.0-M2.jar" enabled="true" runInBatchMode="false"/>
+    <factorypathentry kind="VARJAR" id="M2_REPO/org/geotoolkit/geotk-coverage-imagery/4.0-M2/geotk-coverage-imagery-4.0-M2.jar" enabled="true" runInBatchMode="false"/>
+    <factorypathentry kind="VARJAR" id="M2_REPO/net/iharder/base64/2.3.8/base64-2.3.8.jar" enabled="true" runInBatchMode="false"/>
+    <factorypathentry kind="VARJAR" id="M2_REPO/io/netty/netty/3.9.4.Final/netty-3.9.4.Final.jar" enabled="true" runInBatchMode="false"/>
+    <factorypathentry kind="VARJAR" id="M2_REPO/org/geotoolkit/geotk-feature-store/4.0-M2/geotk-feature-store-4.0-M2.jar" enabled="true" runInBatchMode="false"/>
+    <factorypathentry kind="VARJAR" id="M2_REPO/org/apache/sis/storage/sis-storage/0.5-M1-jdk7/sis-storage-0.5-M1-jdk7.jar" enabled="true" runInBatchMode="false"/>
+    <factorypathentry kind="VARJAR" id="M2_REPO/org/geotoolkit/geotk-coverage/4.0-M2/geotk-coverage-4.0-M2.jar" enabled="true" runInBatchMode="false"/>
+    <factorypathentry kind="VARJAR" id="M2_REPO/javax/media/jai_core/1.1.3/jai_core-1.1.3.jar" enabled="true" runInBatchMode="false"/>
+    <factorypathentry kind="VARJAR" id="M2_REPO/org/geotoolkit/geotk-feature/4.0-M2/geotk-feature-4.0-M2.jar" enabled="true" runInBatchMode="false"/>
+    <factorypathentry kind="VARJAR" id="M2_REPO/org/apache/sis/core/sis-feature/0.5-M1-jdk7/sis-feature-0.5-M1-jdk7.jar" enabled="true" runInBatchMode="false"/>
+    <factorypathentry kind="VARJAR" id="M2_REPO/com/esri/geometry/esri-geometry-api/1.1.1/esri-geometry-api-1.1.1.jar" enabled="true" runInBatchMode="false"/>
+    <factorypathentry kind="VARJAR" id="M2_REPO/org/json/json/20090211/json-20090211.jar" enabled="true" runInBatchMode="false"/>
+    <factorypathentry kind="VARJAR" id="M2_REPO/org/codehaus/jackson/jackson-core-asl/1.9.12/jackson-core-asl-1.9.12.jar" enabled="true" runInBatchMode="false"/>
+    <factorypathentry kind="VARJAR" id="M2_REPO/org/geotoolkit/geotk-geometry/4.0-M2/geotk-geometry-4.0-M2.jar" enabled="true" runInBatchMode="false"/>
+    <factorypathentry kind="VARJAR" id="M2_REPO/org/antlr/antlr4-runtime/4.2.2/antlr4-runtime-4.2.2.jar" enabled="true" runInBatchMode="false"/>
+    <factorypathentry kind="VARJAR" id="M2_REPO/org/abego/treelayout/org.abego.treelayout.core/1.0.1/org.abego.treelayout.core-1.0.1.jar" enabled="true" runInBatchMode="false"/>
+    <factorypathentry kind="VARJAR" id="M2_REPO/org/antlr/antlr4-annotations/4.2.2/antlr4-annotations-4.2.2.jar" enabled="true" runInBatchMode="false"/>
+    <factorypathentry kind="VARJAR" id="M2_REPO/org/codehaus/groovy/groovy-all/2.2.2/groovy-all-2.2.2.jar" enabled="true" runInBatchMode="false"/>
+    <factorypathentry kind="VARJAR" id="M2_REPO/commons-beanutils/commons-beanutils/1.8.3/commons-beanutils-1.8.3.jar" enabled="true" runInBatchMode="false"/>
+    <factorypathentry kind="VARJAR" id="M2_REPO/jaxen/jaxen-limited/1.1.2/jaxen-limited-1.1.2.jar" enabled="true" runInBatchMode="false"/>
+    <factorypathentry kind="VARJAR" id="M2_REPO/org/geotoolkit/geotk-utility-pending/4.0-M2/geotk-utility-pending-4.0-M2.jar" enabled="true" runInBatchMode="false"/>
+    <factorypathentry kind="VARJAR" id="M2_REPO/java3d/vecmath/1.5.2/vecmath-1.5.2.jar" enabled="true" runInBatchMode="false"/>
+    <factorypathentry kind="VARJAR" id="M2_REPO/org/apache/sis/core/sis-utility/0.5-M1-jdk7/sis-utility-0.5-M1-jdk7.jar" enabled="true" runInBatchMode="false"/>
+    <factorypathentry kind="VARJAR" id="M2_REPO/org/apache/sis/core/sis-metadata/0.5-M1-jdk7/sis-metadata-0.5-M1-jdk7.jar" enabled="true" runInBatchMode="false"/>
+    <factorypathentry kind="VARJAR" id="M2_REPO/org/geotoolkit/geotk-xml-wfs/4.0-M2/geotk-xml-wfs-4.0-M2.jar" enabled="true" runInBatchMode="false"/>
+    <factorypathentry kind="VARJAR" id="M2_REPO/org/geotoolkit/geotk-xml-ogc/4.0-M2/geotk-xml-ogc-4.0-M2.jar" enabled="true" runInBatchMode="false"/>
+    <factorypathentry kind="VARJAR" id="M2_REPO/com/vividsolutions/jts/1.13/jts-1.13.jar" enabled="true" runInBatchMode="false"/>
+    <factorypathentry kind="VARJAR" id="M2_REPO/org/geotoolkit/geotk-xml-ows/4.0-M2/geotk-xml-ows-4.0-M2.jar" enabled="true" runInBatchMode="false"/>
+    <factorypathentry kind="VARJAR" id="M2_REPO/org/geotoolkit/geotk-xml-sld/4.0-M2/geotk-xml-sld-4.0-M2.jar" enabled="true" runInBatchMode="false"/>
+    <factorypathentry kind="VARJAR" id="M2_REPO/org/geotoolkit/geotk-xml-se/4.0-M2/geotk-xml-se-4.0-M2.jar" enabled="true" runInBatchMode="false"/>
+    <factorypathentry kind="VARJAR" id="M2_REPO/org/geotoolkit/geotk-xml-wms/4.0-M2/geotk-xml-wms-4.0-M2.jar" enabled="true" runInBatchMode="false"/>
+    <factorypathentry kind="VARJAR" id="M2_REPO/org/geotoolkit/geotk-style/4.0-M2/geotk-style-4.0-M2.jar" enabled="true" runInBatchMode="false"/>
+    <factorypathentry kind="VARJAR" id="M2_REPO/org/geotoolkit/geotk-jaxp-core/4.0-M2/geotk-jaxp-core-4.0-M2.jar" enabled="true" runInBatchMode="false"/>
+    <factorypathentry kind="VARJAR" id="M2_REPO/org/geotoolkit/geotk-xml-xsd/4.0-M2/geotk-xml-xsd-4.0-M2.jar" enabled="true" runInBatchMode="false"/>
+    <factorypathentry kind="VARJAR" id="M2_REPO/org/geotoolkit/geotk-jaxp-gml/4.0-M2/geotk-jaxp-gml-4.0-M2.jar" enabled="true" runInBatchMode="false"/>
+    <factorypathentry kind="VARJAR" id="M2_REPO/org/geotoolkit/geotk-jtswrapper/4.0-M2/geotk-jtswrapper-4.0-M2.jar" enabled="true" runInBatchMode="false"/>
+    <factorypathentry kind="VARJAR" id="M2_REPO/org/geotoolkit/geotk-xml-gml/4.0-M2/geotk-xml-gml-4.0-M2.jar" enabled="true" runInBatchMode="false"/>
+    <factorypathentry kind="VARJAR" id="M2_REPO/org/geotoolkit/geotk-metadata-sql/4.0-M2/geotk-metadata-sql-4.0-M2.jar" enabled="true" runInBatchMode="false"/>
+    <factorypathentry kind="VARJAR" id="M2_REPO/org/geotoolkit/geotk-utility/4.0-M2/geotk-utility-4.0-M2.jar" enabled="true" runInBatchMode="false"/>
+    <factorypathentry kind="VARJAR" id="M2_REPO/org/geotoolkit/geotk-referencing/4.0-M2/geotk-referencing-4.0-M2.jar" enabled="true" runInBatchMode="false"/>
+    <factorypathentry kind="VARJAR" id="M2_REPO/org/apache/sis/core/sis-referencing/0.5-M1-jdk7/sis-referencing-0.5-M1-jdk7.jar" enabled="true" runInBatchMode="false"/>
+    <factorypathentry kind="VARJAR" id="M2_REPO/net/jcip/jcip-annotations/1.0/jcip-annotations-1.0.jar" enabled="true" runInBatchMode="false"/>
+    <factorypathentry kind="VARJAR" id="M2_REPO/javax/measure/jsr-275/0.9.3/jsr-275-0.9.3.jar" enabled="true" runInBatchMode="false"/>
 </factorypath>
