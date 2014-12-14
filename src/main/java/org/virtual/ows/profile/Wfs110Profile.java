@@ -3,10 +3,6 @@ package org.virtual.ows.profile;
 import java.util.ArrayList;
 import java.util.List;
 
-import lombok.Getter;
-import lombok.NonNull;
-import lombok.extern.slf4j.Slf4j;
-
 import org.geotoolkit.wfs.xml.v110.FeatureTypeType;
 import org.geotoolkit.wfs.xml.v110.WFSCapabilitiesType;
 import org.virtual.ows.WfsClient;
@@ -14,26 +10,18 @@ import org.virtualrepository.Properties;
 import org.virtualrepository.Property;
 
 
-@Slf4j
-public class Wfs110Profile implements WfsProfile {
+public class Wfs110Profile extends WfsBaseProfile {
 
-	@Getter
-	final WfsClient client;
-	
 	WFSCapabilitiesType capabilities;
 	
 	
-	public Wfs110Profile(@NonNull WfsClient client) {
-		
-		this.client=client;
-		
+	public Wfs110Profile(WfsClient client) {
+		super(client);	
 	}
 	
 	
 	@Override
-	public Properties properties() {
-		
-		Properties properties = new Properties();
+	public void $update(Properties properties) {
 		
 		properties.add(
 				
@@ -43,8 +31,6 @@ public class Wfs110Profile implements WfsProfile {
 					new Property("provider",capabilities.getServiceProvider().getProviderName())
 					
 		);
-		
-		return properties;
 	}
 
 
@@ -61,21 +47,9 @@ public class Wfs110Profile implements WfsProfile {
 	}
 	
 	
-	public void refresh() {
+	public void $refresh() {
 
-		try {
-		
-		  log.info("refreshing profile for {}", client.service().name());
-			
-		  capabilities = client.capabilities().get(WFSCapabilitiesType.class);
-
-		}
-		catch(RuntimeException e) { //intercept to inform
-			
-			log.warn("cannot refresh profile for "+client.service().name(),e);
-			
-			throw e;
-		}
+		capabilities = client.capabilities().get(WFSCapabilitiesType.class);
 		
 	}
 }

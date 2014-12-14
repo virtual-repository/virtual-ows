@@ -2,12 +2,10 @@ package org.virtual.ows.profile;
 
 import java.util.List;
 
-import org.virtualrepository.Properties;
+import org.virtualrepository.impl.PropertyProvider;
 
-public interface WfsProfile {
+public interface WfsProfile extends PropertyProvider {
 
-	Properties properties();
-	
 	List<WfsTypeProfile> types();
 	
 	void refresh();

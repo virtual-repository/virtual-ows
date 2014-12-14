@@ -10,6 +10,7 @@ import java.io.InputStream;
 import java.util.List;
 
 import javax.inject.Singleton;
+import javax.xml.namespace.QName;
 
 import lombok.NonNull;
 import lombok.extern.slf4j.Slf4j;
@@ -19,7 +20,6 @@ import org.slf4j.LoggerFactory;
 import org.virtual.ows.OwsProxy;
 import org.virtual.ows.WfsClient;
 import org.virtual.ows.common.CommonProducers;
-import org.virtualrepository.Properties;
 import org.virtualrepository.RepositoryService;
 
 import dagger.Module;
@@ -29,26 +29,33 @@ import dagger.Provides;
 @Module(includes=CommonProducers.class, library=true)
 public class ConfigurationProducers {
 
+	@Provides
+	@Singleton
+	List<WfsClient> clients(@NonNull Configuration configuration) {
+		
+		return configuration.services().stream().map(WfsClient::new).collect(toList());
+	}
 	
 	@Provides
 	@Singleton
-	List<RepositoryService> services(@NonNull Configuration configuration) {
+	List<RepositoryService> services(List<WfsClient> clients) {
 		
-		return configuration.services().stream().map($-> {
+		return clients.stream().map($-> {
+			
+			QName name = $.service().name();
+			String uri = $.service().uri();
 		
-			log.info("plugging geoserver {} @ {}",$.name(),$.uri());
+			log.info("plugging geoserver {} @ {}",name,uri);
 			
-			OwsProxy proxy = new OwsProxy(new WfsClient($));
+			OwsProxy proxy = new OwsProxy($);
 			
-			try {
-				proxy.profile().refresh();
-			}
-			catch(Exception tolerateAtThisStage) {}
+			RepositoryService service = new RepositoryService(name,proxy);
 			
-			Properties props = proxy.profile().properties();
+			//service properties provided by the profile
+			service.properties(proxy.profile());
 			
-			return new RepositoryService($.name(),proxy,props.toArray());
-		
+			return service;
+
 		})
 		.collect(toList());
 	}

@@ -20,25 +20,25 @@ import org.virtualrepository.spi.ServiceProxy;
 @Getter
 public class OwsProxy implements ServiceProxy {
 
-	final OwsBrowser browser;
+	private final OwsBrowser browser;
 	
-	final List<? extends Importer<?, ?>> importers;
+	private final List<? extends Importer<?, ?>> importers;
 	
-	WfsProfile profile;
+	private WfsProfile profile;
 	
 	public OwsProxy(@NonNull WfsClient client) {
 		
 		profile = profileFor(client);
 		
-		this.browser=new OwsBrowser(profile,client);
+		browser=new OwsBrowser(profile,client);
 		
-		this.importers= asList(
+		importers= asList(
 				
-							new WfsRawReader(client),
-							new WfsReader(client)
-		
-							//may well grow with the plugin
-						);
+						new WfsRawReader(client),
+						new WfsReader(client)
+	
+						//may well grow with the plugin
+					);
 			
 	}
 	
@@ -46,9 +46,11 @@ public class OwsProxy implements ServiceProxy {
 	public List<? extends Publisher<?, ?>> publishers() {
 		return emptyList();
 	}
-
 	
-	private WfsProfile profileFor(WfsClient client) {
+	
+	///////////////////////////////////////////////////////////
+	
+	public WfsProfile profileFor(WfsClient client) {
 		
 		switch (client.service().version()) {
 			

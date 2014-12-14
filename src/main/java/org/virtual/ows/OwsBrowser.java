@@ -27,10 +27,10 @@ public class OwsBrowser implements Browser {
 	@Override
 	public Iterable<? extends MutableAsset> discover(Collection<? extends AssetType> ignore) {
 		 
-		//as long as we support a single asset type, we can safely ignore the input.
+		//note: as long as we support a single asset type, we can safely ignore the input.
 		
-		 if (profile.types().isEmpty())
-			 profile.refresh();
+		//we may add configuration to make this interval-dependent
+		profile.refresh();
 		 
 		return profile.types().stream().map(this::adapt).collect(toList());
 	}

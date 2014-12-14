@@ -8,8 +8,6 @@ import static org.virtual.ows.OwsService.*;
 import static org.virtual.ows.OwsService.Version.*;
 import static org.virtualrepository.ows.WfsFeatureType.*;
 
-import java.util.Arrays;
-import java.util.Collections;
 import java.util.UUID;
 
 import javax.ws.rs.client.Entity;
@@ -19,9 +17,7 @@ import javax.xml.namespace.QName;
 
 import lombok.extern.slf4j.Slf4j;
 
-import org.junit.Assert;
 import org.junit.Test;
-import org.opengis.feature.Feature;
 import org.virtual.ows.OwsBrowser;
 import org.virtual.ows.OwsProxy;
 import org.virtual.ows.WfsClient;
@@ -52,18 +48,12 @@ public class IntegrationTests {
 	}
 	
 	@Test
-	public void fetchProfile() {
-		
-		proxy.profile();
-		
-	}
-	
-	@Test
 	public void discover() {
 		
 		OwsBrowser browser = proxy.browser();
 		
 		System.out.println(browser.discover(emptyList()));
+		
 		
 	}
 	
@@ -101,6 +91,17 @@ public class IntegrationTests {
 	}
 	
 	@Test
+	public void browseWithVR() throws Exception {
+		
+		VirtualRepository repo = new Repository();
+		
+		repo.discover(type);
+		
+		System.out.println(repo.services().iterator().next().properties());
+		
+	}
+	
+	@Test
 	public void browseAndRetrieveWithVR() throws Exception {
 		
 		long time = currentTimeMillis();
@@ -112,6 +113,8 @@ public class IntegrationTests {
 		Features features = repo.retrieve(repo.iterator().next(),Features.class);
 		
 		log.info("fetched {} features in {} ms.",features.all().size(),currentTimeMillis()-time);
+		
+		System.out.println(repo.services());
 		
 	}
 	

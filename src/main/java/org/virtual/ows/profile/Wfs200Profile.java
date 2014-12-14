@@ -3,9 +3,6 @@ package org.virtual.ows.profile;
 import java.util.ArrayList;
 import java.util.List;
 
-import lombok.NonNull;
-import lombok.extern.slf4j.Slf4j;
-
 import org.geotoolkit.wfs.xml.v200.FeatureTypeType;
 import org.geotoolkit.wfs.xml.v200.WFSCapabilitiesType;
 import org.virtual.ows.WfsClient;
@@ -13,24 +10,17 @@ import org.virtualrepository.Properties;
 import org.virtualrepository.Property;
 
 
-@Slf4j
-public class Wfs200Profile implements WfsProfile {
+public class Wfs200Profile extends WfsBaseProfile {
 
-	final WfsClient client;
-	
 	WFSCapabilitiesType capabilities;
 	
 	
-	public Wfs200Profile(@NonNull WfsClient client) {
-		
-		this.client=client;
-	
+	public Wfs200Profile(WfsClient client) {
+		super(client);
 	}
 	
 	@Override
-	public Properties properties() {
-		
-		Properties properties = new Properties();
+	public void $update(Properties properties) {
 		
 		properties.add(
 				
@@ -39,8 +29,6 @@ public class Wfs200Profile implements WfsProfile {
 					new Property("provider",capabilities.getServiceProvider().getProviderName())
 					
 		);
-		
-		return properties;
 	}
 
 
@@ -57,10 +45,8 @@ public class Wfs200Profile implements WfsProfile {
 	}
 	
 	
-	public void refresh() {
+	public void $refresh() {
 
-		log.info("refreshing profile for {}", client.service().name());
-			
 		capabilities = client.capabilities().get(WFSCapabilitiesType.class);
 
 	}
