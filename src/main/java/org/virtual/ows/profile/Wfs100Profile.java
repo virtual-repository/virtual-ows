@@ -67,10 +67,19 @@ public class Wfs100Profile implements WfsProfile {
 	
 	public void refresh() {
 
-		log.info("refreshing profile for {}", client.service().name());
+		try {
 			
-		capabilities = client.capabilities().get(WFSCapabilitiesType.class);
+		  log.info("refreshing profile for {}", client.service().name());
+			
+		  capabilities = client.capabilities().get(WFSCapabilitiesType.class);
 
+		}
+		catch(RuntimeException e) { //intercept to inform
+			
+			log.warn("cannot refresh profile for "+client.service().name(),e);
+			
+			throw e;
+		}
 		
 	}
 }
