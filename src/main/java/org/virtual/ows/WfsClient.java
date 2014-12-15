@@ -5,6 +5,7 @@ import static javax.ws.rs.client.ClientBuilder.*;
 import static javax.ws.rs.core.HttpHeaders.*;
 import static org.virtual.ows.OwsService.Version.*;
 import static org.virtual.ows.common.Utils.*;
+import static org.virtual.wfs.configuration.Configuration.Mode.*;
 
 import java.io.IOException;
 import java.util.HashMap;
@@ -21,14 +22,11 @@ import javax.ws.rs.client.ClientResponseContext;
 import javax.ws.rs.client.ClientResponseFilter;
 import javax.ws.rs.client.Invocation.Builder;
 import javax.ws.rs.client.WebTarget;
-import javax.ws.rs.ext.ContextResolver;
-import javax.ws.rs.ext.Provider;
-import javax.xml.bind.JAXBContext;
-import javax.xml.bind.JAXBException;
 
 import lombok.Getter;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
+import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 
 import org.geotoolkit.feature.type.GeometryType;
@@ -38,6 +36,7 @@ import org.glassfish.jersey.filter.LoggingFilter;
 import org.glassfish.jersey.message.GZipEncoder;
 import org.opengis.feature.FeatureType;
 import org.opengis.feature.PropertyType;
+import org.virtual.wfs.configuration.Configuration.Mode;
 
 
 @Slf4j
@@ -48,8 +47,13 @@ public class WfsClient {
 	
 	final private Map<String,List<? extends FeatureType>> map = new HashMap<>();
 	
+
+	@Getter @Setter
+	private Mode mode;
+	
 	@NonNull @Getter
 	final private OwsService service;
+	
 
 	
 	public void ping() {
@@ -161,8 +165,9 @@ public class WfsClient {
 				.register(GZipEncoder.class)
 				.register(EncodingFilter.class);
 		}
-			
-		client.register(new LoggingFilter(Logger.getLogger(LoggingFilter.class.getName()),true));
+		
+		if (mode==development)
+			client.register(new LoggingFilter(Logger.getLogger(LoggingFilter.class.getName()),true));
 		
 		return client;
 	}
@@ -182,28 +187,5 @@ public class WfsClient {
 				responseContext.getHeaders().put(CONTENT_TYPE, asList("text/xml"));
 			
 		}
-	}
-	
-	
-	@Provider
-	@Slf4j
-	public static class JAXBContextProvider implements ContextResolver<JAXBContext> {
-	    
-		static final JAXBContextProvider instance = new JAXBContextProvider();
-		
-		private JAXBContext context;
-	 
-	    public JAXBContext getContext(Class<?> type) {
-	      
-	    	if (context == null) {
-	            try {
-	                context = JAXBContext.newInstance("net.opengis.wfs.v_1_1_0:net.opengis.gml.v_3_1_1");
-	            } catch (JAXBException e) {
-	                log.error("cannot use jaxb provider");
-	            }
-	        }
-	 
-	        return context;
-	    }
 	}
 }

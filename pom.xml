@@ -103,6 +103,7 @@
 			<artifactId>geotk-client-wfs</artifactId>
 			<version>4.0-M2</version>
 		</dependency>
+		
 
 		<!-- test -->
 

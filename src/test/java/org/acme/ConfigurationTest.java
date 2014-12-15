@@ -7,6 +7,7 @@ import static org.virtual.ows.OwsService.*;
 import static org.virtual.ows.OwsService.Version.*;
 import static org.virtual.ows.common.Utils.*;
 import static org.virtual.wfs.configuration.Configuration.*;
+import static org.virtual.wfs.configuration.Configuration.Mode.*;
 
 import javax.xml.namespace.QName;
 
@@ -19,12 +20,14 @@ public class ConfigurationTest {
 	@Test
 	public void configurationRoundTrips() {
 		
-		Configuration configuration = config().services(asList(
-				service(QName.valueOf("http://acme.org/somename"),"http://acme.org/someuri"),
-				service(QName.valueOf("http://acme.org/somename"),"http://acme.org/someuri")
-							 .compress(false)
-							 .excludeGeom(true)
-							 .excludes(singleton("test"))
+		Configuration configuration = config()
+				.mode(development)
+				.services(asList(
+					service(QName.valueOf("http://acme.org/somename"),"http://acme.org/someuri"),
+					service(QName.valueOf("http://acme.org/somename"),"http://acme.org/someuri")
+								 .compress(false)
+								 .excludeGeom(true)
+								 .excludes(singleton("test"))
 		));     
 		
 		assertEquals(configuration,jsonRoundtrip(configuration));

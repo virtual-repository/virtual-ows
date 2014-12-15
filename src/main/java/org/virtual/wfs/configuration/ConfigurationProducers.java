@@ -33,7 +33,9 @@ public class ConfigurationProducers {
 	@Singleton
 	List<WfsClient> clients(@NonNull Configuration configuration) {
 		
-		return configuration.services().stream().map(WfsClient::new).collect(toList());
+		return configuration.services().stream().map(
+					$->new WfsClient($).mode(configuration.mode())
+		).collect(toList());
 	}
 	
 	@Provides

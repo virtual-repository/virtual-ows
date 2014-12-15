@@ -7,6 +7,7 @@ import static javax.ws.rs.core.MediaType.*;
 import static org.junit.Assert.*;
 import static org.virtual.ows.OwsService.*;
 import static org.virtual.ows.OwsService.Version.*;
+import static org.virtual.wfs.configuration.Configuration.Mode.*;
 import static org.virtualrepository.ows.WfsFeatureType.*;
 
 import java.util.UUID;
@@ -19,6 +20,8 @@ import javax.xml.namespace.QName;
 import lombok.extern.slf4j.Slf4j;
 
 import org.junit.Before;
+//github.com/virtual-repository/virtual-ows.git
+import org.junit.Test;
 import org.virtual.ows.OwsBrowser;
 import org.virtual.ows.OwsProxy;
 import org.virtual.ows.WfsClient;
@@ -30,8 +33,6 @@ import org.virtualrepository.VirtualRepository;
 import org.virtualrepository.impl.Repository;
 import org.virtualrepository.ows.Features;
 import org.virtualrepository.ows.WfsFeatureType;
-//github.com/virtual-repository/virtual-ows.git
-import org.junit.Test;
 
 @Slf4j
 public class IntegrationTests {
@@ -45,11 +46,12 @@ public class IntegrationTests {
 	@Before
 	public void setUp(){
 		
+		
 		client = new WfsClient(service(someName(),endpoint)
 										.version(v110)
 										.compress(true)
 										.excludeGeom(true)
-										.excludes(singleton("SUBOCEAN")));
+										.excludes(singleton("SUBOCEAN"))).mode(development);
 	
 		proxy = new OwsProxy(client);
 		
@@ -134,6 +136,7 @@ public class IntegrationTests {
 		
 		repo.discover(type);
 		
+		//enough to inspect property publication
 		System.out.println(repo.services().iterator().next().properties());
 		
 	}
@@ -150,8 +153,6 @@ public class IntegrationTests {
 		Features features = repo.retrieve(repo.iterator().next(),Features.class);
 		
 		log.info("fetched {} features in {} ms.",features.all().size(),currentTimeMillis()-time);
-		
-		System.out.println(repo.services());
 		
 	}
 	
