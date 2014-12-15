@@ -13,6 +13,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import javax.annotation.Priority;
@@ -42,7 +43,7 @@ import org.virtual.wfs.configuration.Configuration.Mode;
 @Slf4j
 @RequiredArgsConstructor 
 public class WfsClient {
-
+	
 	final private JAXBFeatureTypeReader reader = new JAXBFeatureTypeReader();
 	
 	final private Map<String,List<? extends FeatureType>> map = new HashMap<>();
@@ -166,8 +167,11 @@ public class WfsClient {
 				.register(EncodingFilter.class);
 		}
 		
-		if (mode==development)
+		Logger.getLogger("org.geotoolkit.feature.xml").setLevel(Level.OFF);
+		if (mode==development) {
 			client.register(new LoggingFilter(Logger.getLogger(LoggingFilter.class.getName()),true));
+			Logger.getLogger("org.geotoolkit.feature.xml").setLevel(Level.INFO);
+		}
 		
 		return client;
 	}
