@@ -40,15 +40,17 @@ public class IntegrationTests {
 	String endpoint =  "http://www.fao.org/figis/geoserver/fifao/ows";
 	
 	WfsClient client;
-	
+		
 	OwsProxy proxy;
+	
+	Version WFS_VERSION = v110;
 	
 	@Before
 	public void setUp(){
 		
 		
 		client = new WfsClient(service(someName(),endpoint)
-										.version(v110)
+										.version(WFS_VERSION)
 										.compress(true)
 										.excludeGeom(true)
 										.excludes(singleton("SUBOCEAN"))).mode(development);
@@ -71,15 +73,20 @@ public class IntegrationTests {
 		
 		profile.refresh();
 		
+		//test properties
 		Properties properties = profile.properties();
-		assertEquals(6, properties.size());
 		assertNotNull(properties.lookup("title").value());
 		assertNotNull(properties.lookup("abstract").value());
 		assertNotNull(properties.lookup("keywords").value());
 		assertNotNull(properties.lookup("type").value());
-		assertNotNull(properties.lookup("version").value());
-		assertNotNull(properties.lookup("provider").value());
-		
+		assertEquals(WFS_VERSION.value(), properties.lookup("version").value());
+		if(WFS_VERSION != Version.v100){
+			assertNotNull(properties.lookup("provider").value());
+			assertEquals(6, properties.size());
+		}else{
+			assertEquals(5, properties.size());
+		}	
+			
 		for(Property prop : properties)
 			log.info("Property '{}' = {}",prop.name(),prop.value());
 		

@@ -1,10 +1,16 @@
 package org.virtual.ows.profile;
 
-import static java.util.stream.Collectors.toList;
+import static org.virtual.ows.common.Utils.*;
 
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.xml.bind.JAXBElement;
+import javax.xml.bind.Unmarshaller;
+
+import org.apache.sis.xml.MarshallerPool;
+import org.geotoolkit.wfs.xml.WFSMarshallerPool;
 import org.geotoolkit.wfs.xml.v100.FeatureTypeType;
 import org.geotoolkit.wfs.xml.v100.WFSCapabilitiesType;
 import org.virtual.ows.WfsClient;
@@ -26,17 +32,13 @@ public class Wfs100Profile extends WfsBaseProfile {
 		if (capabilities != null)	
 			properties.add(
 				
-				new Property("title",capabilities.getServiceIdentification().getFirstTitle()),
-				new Property("abstract",capabilities.getServiceIdentification().getFirstAbstract()),
-				new Property("keywords",capabilities.getServiceIdentification().getKeywords()
-										.stream().flatMap($->$.getKeywordList().stream()).collect(toList()).toString()),
-							
-				new Property("type", capabilities.getServiceIdentification().getServiceType().getValue()),
-				new Property("version",capabilities.getVersion()),
-				new Property("provider",capabilities.getServiceProvider().getProviderName())
+				new Property("title",capabilities.getService().getTitle()),
+				new Property("abstract",capabilities.getService().getAbstract()),
+				new Property("keywords",capabilities.getService().getKeywords()),		
+				new Property("type", capabilities.getService().getName()),
+				new Property("version",capabilities.getVersion())
 					
-			);
-		
+			);	
 	}
 
 
@@ -53,9 +55,24 @@ public class Wfs100Profile extends WfsBaseProfile {
 	}
 	
 	
+	@SuppressWarnings("rawtypes")
 	public void $refresh() {
 
-		capabilities = client.capabilities().get(WFSCapabilitiesType.class);
+		InputStream stream = client.capabilities().get(InputStream.class);
+		
+		try {
+			MarshallerPool pool = WFSMarshallerPool.getInstanceV100();
+			Unmarshaller unmarshaller = pool.acquireUnmarshaller();
+
+			Object obj = unmarshaller.unmarshal(stream);
+			if(obj instanceof JAXBElement){
+				obj = ((JAXBElement) obj).getValue();
+				capabilities = (WFSCapabilitiesType) obj;
+			}
+		
+		} catch (Exception e) {
+			unchecked("cannot read OGC WFS GetCapabilities document", e);
+		}
 		
 	}
 }

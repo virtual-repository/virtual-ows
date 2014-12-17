@@ -1,10 +1,18 @@
 package org.virtual.ows.profile;
 
 import static java.util.stream.Collectors.toList;
+import static org.virtual.ows.common.Utils.unchecked;
 
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.xml.bind.JAXBContext;
+import javax.xml.bind.JAXBElement;
+import javax.xml.bind.Unmarshaller;
+
+import org.apache.sis.xml.MarshallerPool;
+import org.geotoolkit.wfs.xml.WFSMarshallerPool;
 import org.geotoolkit.wfs.xml.v110.FeatureTypeType;
 import org.geotoolkit.wfs.xml.v110.WFSCapabilitiesType;
 import org.virtual.ows.WfsClient;
@@ -53,9 +61,24 @@ public class Wfs110Profile extends WfsBaseProfile {
 	}
 	
 	
+	@SuppressWarnings("rawtypes")
 	public void $refresh() {
 
-		capabilities = client.capabilities().get(WFSCapabilitiesType.class);
+		InputStream stream = client.capabilities().get(InputStream.class);
+		
+		try {
+			MarshallerPool pool = WFSMarshallerPool.getInstance();
+			Unmarshaller unmarshaller = pool.acquireUnmarshaller();
+
+			Object obj = unmarshaller.unmarshal(stream);
+			if(obj instanceof JAXBElement){
+				obj = ((JAXBElement) obj).getValue();
+				capabilities = (WFSCapabilitiesType) obj;
+			}
+		
+		} catch (Exception e) {
+			unchecked("cannot read OGC WFS GetCapabilities document", e);
+		}
 		
 	}
 }
