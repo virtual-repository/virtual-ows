@@ -11,6 +11,7 @@
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<jersey.version>2.13</jersey.version>
+		<geotk.version>4.x-SNAPSHOT</geotk.version>
 	</properties>
 
 
@@ -37,6 +38,9 @@
 			<id>geotoolkit</id>
 			<name>Geotk repository</name>
 			<url>http://maven.geotoolkit.org</url>
+			<snapshots>
+				<enabled>true</enabled>
+			</snapshots>
 		</repository>
 	</repositories>
 
@@ -101,7 +105,7 @@
 		<dependency>
 			<groupId>org.geotoolkit</groupId>
 			<artifactId>geotk-client-wfs</artifactId>
-			<version>4.0-M2</version>
+			<version>${geotk.version}</version>
 		</dependency>
 		
 
