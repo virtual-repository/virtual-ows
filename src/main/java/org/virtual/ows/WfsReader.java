@@ -1,6 +1,7 @@
 package org.virtual.ows;
 
 import java.io.InputStream;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 
@@ -36,7 +37,7 @@ public class WfsReader implements Importer<WfsFeatureType,Features> {
 	
 		String name = asset.name();
 		
-		JAXPStreamFeatureReader reader = new JAXPStreamFeatureReader((List) client.typesFor(name));
+		JAXPStreamFeatureReader reader = new JAXPStreamFeatureReader((List) Arrays.asList(client.typeFor(name)));
 		
 		InputStream stream =  client.featuresFor(asset.name()).get(InputStream.class);
 

@@ -15,6 +15,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import static java.util.stream.Collectors.*;
 
 import javax.annotation.Priority;
 import javax.ws.rs.client.Client;
@@ -93,7 +94,7 @@ public class WfsClient {
 	}
 
 	
-	public List<? extends FeatureType> typesFor(@NonNull String name)  {
+	public FeatureType typeFor(@NonNull String name)  {
 		
 		List<? extends FeatureType> types = map.get(name);
 		
@@ -107,13 +108,16 @@ public class WfsClient {
 				
 			}
 			catch(Exception e) {
-				throw unchecked("cannot acquire schema for "+name,e);
+				throw unchecked("cannot acquire schemas for "+name,e);
 			}
 			
 			map.put(name, types);
 		}
 		
-		return types;
+		FeatureType type = types.stream()
+				.filter(p -> name.contains(p.getName().toString()))
+				.collect(toList()).get(0);
+		return type;
 	}
 
 	
@@ -124,16 +128,20 @@ public class WfsClient {
 		
 		Set<String> props = new HashSet<String>();
 		
-		for (FeatureType type : typesFor(typename))
-			for (PropertyType ptype : type.getProperties(true))
-				if(service.excludeGeom()){
-					if(!(ptype instanceof GeometryType)
-					&& !service.excludes().contains(ptype.getName().toString()))
-							props.add(ptype.getName().toString());		
-				}else{
-					if (!service.excludes().contains(ptype.getName().toString()))
-						props.add(ptype.getName().toString());
-				}
+		FeatureType type = typeFor(typename);
+
+		for (PropertyType ptype : type.getProperties(true)){
+			
+			if(service.excludeGeom()){
+				if(!(ptype instanceof GeometryType)
+				&& !service.excludes().contains(ptype.getName().toString()))
+						props.add(ptype.getName().toString());		
+			}else{
+				if (!service.excludes().contains(ptype.getName().toString()))
+					props.add(ptype.getName().toString());
+			}
+			
+		}
 		
 		return props;
 	}
