@@ -130,15 +130,19 @@ public class WfsClient {
 		
 		FeatureType type = typeFor(typename);
 
-		for (PropertyType ptype : type.getProperties(true)){
+		for (PropertyType ptype : type.getProperties(false)){
 			
+			String name = ptype.getName().toString();
+				
 			if(service.excludeGeom()){
 				if(!(ptype instanceof GeometryType)
-				&& !service.excludes().contains(ptype.getName().toString()))
-						props.add(ptype.getName().toString());		
+				&& !service.excludes().contains(name)
+				&& !name.startsWith("@"))
+						props.add(name);		
 			}else{
-				if (!service.excludes().contains(ptype.getName().toString()))
-					props.add(ptype.getName().toString());
+				if (!service.excludes().contains(name)
+					&& !name.startsWith("@"))
+					props.add(name);
 			}
 			
 		}
