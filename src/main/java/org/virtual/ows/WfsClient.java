@@ -15,7 +15,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import static java.util.stream.Collectors.*;
+import java.util.stream.Collectors;
 
 import javax.annotation.Priority;
 import javax.ws.rs.client.Client;
@@ -115,8 +115,8 @@ public class WfsClient {
 		}
 		
 		FeatureType type = types.stream()
-				.filter(p -> name.contains(p.getName().toString()))
-				.collect(toList()).get(0);
+				.filter(f -> name.contains(f.getName().toString()))
+				.collect(Collectors.<FeatureType>toList()).get(0);
 		return type;
 	}
 
