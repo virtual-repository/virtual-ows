@@ -32,12 +32,12 @@ import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 
 import org.geotoolkit.feature.type.GeometryType;
+import org.geotoolkit.feature.type.PropertyDescriptor;
 import org.geotoolkit.feature.xml.jaxb.JAXBFeatureTypeReader;
 import org.glassfish.jersey.client.filter.EncodingFilter;
 import org.glassfish.jersey.filter.LoggingFilter;
 import org.glassfish.jersey.message.GZipEncoder;
 import org.opengis.feature.FeatureType;
-import org.opengis.feature.PropertyType;
 import org.virtual.wfs.configuration.Configuration.Mode;
 
 
@@ -88,7 +88,7 @@ public class WfsClient {
 			if (builder.length()>0)
 				target = target.queryParam("propertyName", builder.toString());
 		}
-		
+
 		return target.request();
 		
 	}
@@ -118,6 +118,7 @@ public class WfsClient {
 				.filter(f -> (name.contains(f.getName().toString())
 						   || name.contains(f.getName().tip().toString())))
 				.collect(Collectors.<FeatureType>toList()).get(0);
+		
 		return type;
 	}
 
@@ -125,31 +126,31 @@ public class WfsClient {
 	////////////////////////////////////////////////////////////////////////////// helpers
 	
 	
+	@SuppressWarnings("deprecation")
 	private Set<String> propertiesFor(String typename) {
 		
 		Set<String> props = new HashSet<String>();
 		
-		FeatureType type = typeFor(typename);
+		org.geotoolkit.feature.type.FeatureType type = (org.geotoolkit.feature.type.FeatureType) typeFor(typename);
 
-		for (PropertyType ptype : type.getProperties(false)){
+		for(PropertyDescriptor descriptor : type.getDescriptors()) {
 			
-			String name = ptype.getName().toString();
-
+			String ns = descriptor.getName().head().toString();
+			String name = descriptor.getName().tip().toString();
+			
 			if(service.excludeGeom()){
-				if(!(ptype instanceof GeometryType)
+				if(!(descriptor.getType() instanceof GeometryType)
 				&& !service.excludes().contains(name)
 				&& !name.startsWith("@")
-				&& !name.contains("gml")
-				&& !name.contains("XMLSchema"))
-						props.add(name);		
+				&& !ns.contains("gml"))
+						props.add(name);
 			}else{
 				if (!service.excludes().contains(name)
 					&& !name.startsWith("@")
-					&& !name.contains("gml")
-					&& !name.contains("XMLSchema"))
+					&& !name.equals("name")
+					&& !ns.contains("gml"))
 					props.add(name);
 			}
-			
 		}
 		
 		return props;
@@ -161,8 +162,6 @@ public class WfsClient {
 		
 		return make("DescribeFeatureType", false).queryParam(nameClause,typename).request();
 	}
-	
-	
 	
 	private  WebTarget make(String $, boolean compressResponse) {
 		

@@ -58,7 +58,9 @@ public class IntegrationTests {
 	
 	@Parameters(name = "{index}: WFS {0}")
 	public static Collection<Object[]> data() {
-        return Arrays.asList(new Object[][]{{v100},{v110}});
+        return Arrays.asList(new Object[][]{
+        		{v100}, {v110}
+        });
     }
 	
 	@Parameter
