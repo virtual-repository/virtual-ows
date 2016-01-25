@@ -10,6 +10,8 @@ import static org.virtual.ows.OwsService.Version.*;
 import static org.virtual.wfs.configuration.Configuration.Mode.*;
 import static org.virtualrepository.ows.WfsFeatureType.*;
 
+import java.util.Arrays;
+import java.util.Collection;
 import java.util.UUID;
 
 import javax.ws.rs.client.Entity;
@@ -22,6 +24,10 @@ import lombok.extern.slf4j.Slf4j;
 import org.junit.Before;
 //github.com/virtual-repository/virtual-ows.git
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.junit.runners.Parameterized;
+import org.junit.runners.Parameterized.Parameter;
+import org.junit.runners.Parameterized.Parameters;
 import org.virtual.ows.OwsBrowser;
 import org.virtual.ows.OwsProxy;
 import org.virtual.ows.WfsClient;
@@ -34,29 +40,41 @@ import org.virtualrepository.impl.Repository;
 import org.virtualrepository.ows.Features;
 import org.virtualrepository.ows.WfsFeatureType;
 
+/**
+ * Integration tests for the virtual-ows WFS client. Tests are parametrized upon
+ * WFS version: (1.0, 1.1, 2.0). Version 2.0 doesn't work for the time being.
+ * 
+ *
+ */
 @Slf4j
+@RunWith(Parameterized.class)
 public class IntegrationTests {
 
 	String endpoint =  "http://www.fao.org/figis/geoserver/fifao/ows";
 	
 	WfsClient client;
-		
+	
 	OwsProxy proxy;
 	
-	Version WFS_VERSION = v110;
+	@Parameters
+	public static Collection<Object[]> data() {
+        return Arrays.asList(new Object[][]{{v100},{v110}});
+    }
+	
+	@Parameter
+	public Version wfsVersion;
+
 	
 	@Before
 	public void setUp(){
 		
-		
 		client = new WfsClient(service(someName(),endpoint)
-										.version(WFS_VERSION)
+										.version(wfsVersion)
 										.compress(true)
 										.excludeGeom(true)
 										.excludes(singleton("SUBOCEAN"))).mode(development);
-	
-		proxy = new OwsProxy(client);
 		
+		proxy = new OwsProxy(client);		
 	}
 	
 	@Test
@@ -79,8 +97,8 @@ public class IntegrationTests {
 		assertNotNull(properties.lookup("abstract").value());
 		assertNotNull(properties.lookup("keywords").value());
 		assertNotNull(properties.lookup("type").value());
-		assertEquals(WFS_VERSION.value(), properties.lookup("version").value());
-		if(WFS_VERSION != Version.v100){
+		assertEquals(wfsVersion.value(), properties.lookup("version").value());
+		if(wfsVersion != Version.v100){
 			assertNotNull(properties.lookup("provider").value());
 			assertEquals(6, properties.size());
 		}else{
