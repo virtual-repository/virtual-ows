@@ -88,7 +88,7 @@ public class WfsClient {
 			if (builder.length()>0)
 				target = target.queryParam("propertyName", builder.toString());
 		}
-			
+		
 		return target.request();
 		
 	}
@@ -115,7 +115,8 @@ public class WfsClient {
 		}
 		
 		FeatureType type = types.stream()
-				.filter(f -> name.contains(f.getName().toString()))
+				.filter(f -> (name.contains(f.getName().toString())
+						   || name.contains(f.getName().tip().toString())))
 				.collect(Collectors.<FeatureType>toList()).get(0);
 		return type;
 	}
@@ -133,15 +134,19 @@ public class WfsClient {
 		for (PropertyType ptype : type.getProperties(false)){
 			
 			String name = ptype.getName().toString();
-				
+
 			if(service.excludeGeom()){
 				if(!(ptype instanceof GeometryType)
 				&& !service.excludes().contains(name)
-				&& !name.startsWith("@"))
+				&& !name.startsWith("@")
+				&& !name.contains("gml")
+				&& !name.contains("XMLSchema"))
 						props.add(name);		
 			}else{
 				if (!service.excludes().contains(name)
-					&& !name.startsWith("@"))
+					&& !name.startsWith("@")
+					&& !name.contains("gml")
+					&& !name.contains("XMLSchema"))
 					props.add(name);
 			}
 			
