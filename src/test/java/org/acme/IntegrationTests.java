@@ -56,7 +56,7 @@ public class IntegrationTests {
 	
 	OwsProxy proxy;
 	
-	@Parameters
+	@Parameters(name = "{index}: WFS {0}")
 	public static Collection<Object[]> data() {
         return Arrays.asList(new Object[][]{{v100},{v110}});
     }
