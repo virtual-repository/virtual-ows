@@ -9,7 +9,14 @@ import org.virtualrepository.impl.Type;
 import org.virtualrepository.ows.WfsFeatureType;
 import org.virtualrepository.spi.Importer;
 
-//this is a reader from codelist (assets) extracted from geoservers and presented in tabular form (api)
+/**
+ * WFS Raw reader. This class allows to retrieve WFS FeatureType data as InputStream
+ * This reader allows go from codelist (assets) extracted from WFS and present them
+ * in tabular form (api)
+ * 
+ * @author fabiosimeoni
+ *
+ */
 @RequiredArgsConstructor
 public class WfsRawReader implements Importer<WfsFeatureType, InputStream> {
 

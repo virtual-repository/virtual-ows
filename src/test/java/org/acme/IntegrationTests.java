@@ -41,9 +41,13 @@ import org.virtualrepository.ows.Features;
 import org.virtualrepository.ows.WfsFeatureType;
 
 /**
- * Integration tests for the virtual-ows WFS client. Tests are parametrized upon
- * WFS version: (1.0, 1.1, 2.0). Version 2.0 doesn't work for the time being.
+ * Integration tests for the virtual-ows WFS client.
+ * Tests are parametrized upon WFS version: (1.0, 1.1).
  * 
+ * @note WFS Version 2.0 is currently not supported
+ * 
+ * @author fabiosimeoni
+ * @author eblondel
  *
  */
 @Slf4j

@@ -14,7 +14,14 @@ import org.virtualrepository.ows.Features;
 import org.virtualrepository.ows.WfsFeatureType;
 import org.virtualrepository.spi.Importer;
 
-//this is a reader from codelist (assets) extracted from geoservers and presented in tabular form (api)
+/**
+ * WFS Raw reader. This class allows to retrieve WFS FeatureType data as iterable
+ * Features object (implementing the OGC official GeoAPI Feature interface) This reader
+ * allows go from codelist (assets) extracted from WFS and present them in tabular form (api)
+ * 
+ * @author eblondel
+ * @author fabiosimeoni
+ */
 @RequiredArgsConstructor
 public class WfsReader implements Importer<WfsFeatureType,Features> {
 

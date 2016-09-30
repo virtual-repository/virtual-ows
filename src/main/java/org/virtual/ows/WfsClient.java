@@ -40,7 +40,17 @@ import org.glassfish.jersey.message.GZipEncoder;
 import org.opengis.feature.FeatureType;
 import org.virtual.wfs.configuration.Configuration.Mode;
 
-
+/**
+ * Simple WFS Client based on the OGC official GeoAPI Feature interface
+ * and GeoToolkit implementation.
+ * 
+ * - Currently operational for WFS version 1.0.0 and 1.1.0
+ * - WFS 2.0.0 is not supported yet
+ * 
+ * @author eblondel
+ *
+ */
+@SuppressWarnings("deprecation")
 @Slf4j
 @RequiredArgsConstructor 
 public class WfsClient {

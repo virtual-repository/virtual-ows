@@ -8,11 +8,34 @@
 	<description>A Virtual Repository Plugin for OGC Services</description>
 	<url>https://github.com/virtual-repository/virtual-ows</url>
 
+	<developers>
+		<developer>
+			<id>fabiosimeoni</id>
+			<name>Fabio Simeoni</name>
+			<organization>Food and Agriculture Organization</organization>
+			<organizationUrl>http://www.fao.org</organizationUrl>
+			<roles>
+				<role>developer</role>
+			</roles>
+		</developer>
+		<developer>
+			<id>eblondel</id>
+			<name>Emmanuel Blondel</name>
+			<organization>Food and Agriculture Organization - Fisheries and Aquaculture Department</organization>
+			<organizationUrl>http://www.fao.org/fishery</organizationUrl>
+			<roles>
+				<role>GIS expert</role>
+				<role>developer</role>
+				<role>maintainer</role>
+			</roles>
+		</developer>
+	</developers>
+
 
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<jersey.version>2.13</jersey.version>
-		<geotk.version>4.0-M4</geotk.version>
+		<geotk.version>4.0-M5</geotk.version>
 	</properties>
 
 
@@ -107,16 +130,19 @@
 			<artifactId>geotk-xml-wfs</artifactId>
 			<version>${geotk.version}</version>
 		</dependency>
-
 		<dependency>
 			<groupId>org.geotoolkit</groupId>
 			<artifactId>geotk-jaxp-core</artifactId>
 			<version>${geotk.version}</version>
 		</dependency>
-
 		<dependency>
 			<groupId>org.geotoolkit</groupId>
 			<artifactId>geotk-jaxp-gml</artifactId>
+			<version>${geotk.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.geotoolkit</groupId>
+			<artifactId>geotk-feature</artifactId>
 			<version>${geotk.version}</version>
 		</dependency>
 
